@@ -45,7 +45,7 @@ body {
     padding: 7px 5px;
 }
 
-#input, #instructions, #footer {
+#input, #instructions {
     width: 280px;
 }
 
@@ -207,18 +207,11 @@ body {
 }
 
 #footer {
-    position: fixed;
-    bottom: 5px;
-    left: 30px;
 }
 
-#hosting a, .footer-link {
+#hosting a {
     text-decoration: none;
     color: #00cc33;
-}
-.footer-link {
-    padding-right: 12px;
-    font-size: 12px;
 }
 
 #export-link {
