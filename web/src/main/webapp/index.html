@@ -18,6 +18,8 @@
         <link rel="stylesheet" href="css/flatpickr.min.css">
         <script type="text/javascript" src="js/main.js?v=0.9.1"></script>
         <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" href="http://rawgit.com/opencagedata/leaflet-opencage-search/master/dist/css/L.Control.OpenCageSearch.dev.css" />
+        <script src="http://rawgit.com/opencagedata/leaflet-opencage-search/master/dist/js/L.Control.OpenCageSearch.dev.js"></script>
     </head>
     <body>
         <div id="input">
@@ -37,6 +39,7 @@
             <div class="time_input">
                 <input id="input_date_0" class="flatpickr input_date" type="text" placeholder="Select Date & Time"/>
             </div>
+            <!-- # Enter address -->
             <div id="locationpoints">
                 <div id="x_pointAdd" class="pointAdd"><img src="./img/point_add.png"/></div>
             </div>
@@ -47,6 +50,7 @@
         <div id="gpxExportButton"><a href=""><img alt="gpx" src='img/gpx.png'></a></div>
     </div>
     <div class="clear"></div>
+    <!-- Instructions -->
     <div id="info" class="small_text">
     </div>
     <div id="error" class="error">
@@ -82,28 +86,5 @@
 </div>
 <div id="map">
 </div>
-<!-- Piwik -->
-<script type="text/javascript">
-            PIWIK = false;
-            if (PIWIK) {
-                var _paq = _paq || [];
-                _paq.push(['trackPageView']);
-                _paq.push(['enableLinkTracking']);
-                (function () {
-                    var url = "https://graphhopper.com/piwik/";
-                    _paq.push(['setTrackerUrl', url + 'piwik.php']);
-                    _paq.push(['setSiteId', 1]);
-                    var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-                    g.type = 'text/javascript';
-                    g.defer = true;
-                    g.async = true;
-                    g.src = url + 'piwik.js';
-                    s.parentNode.insertBefore(g, s);
-                })();
-            }
-
-</script>
-<noscript><p><img src="https://graphhopper.com/piwik/piwik.php?idsite=1" style="border:0;" alt=""/></p></noscript>
-<!-- End Piwik Code -->
 </body>
 </html>
