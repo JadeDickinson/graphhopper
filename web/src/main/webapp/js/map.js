@@ -76,7 +76,14 @@ function initMap(bounds, setStartCoord, setIntermediateCoord, setEndCoord, selec
         zoomControl: false,
         loadingControl: false
     });
-
+    var options = {
+        key: 'b2cc2deb5a114ae2a900811b62344871',
+        limit: 10
+    };
+    var control = L.Control.openCageSearch(options).addTo(map);
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
     var _startItem = {
         text: translate.tr('set_start'),
         icon: './img/marker-small-green.png',
