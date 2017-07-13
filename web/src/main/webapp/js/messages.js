@@ -50,4 +50,4 @@ module.exports.getSignName = function (sign) {
         return "unknown";
 };
 
-module.exports.browserTitle = "GraphHopper Maps - Driving Directions";
+module.exports.browserTitle = "GraphHopper Maps - Walking Directions";
