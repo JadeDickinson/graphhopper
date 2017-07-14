@@ -35,7 +35,7 @@ function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, deb
     instructionDiv.append(tdVar);
     var distance = instr.distance;
     if (distance > 0) {
-        instructionDiv.append("<td class='instr_distance'><span>" + translate.createDistanceString(distance, useMiles) + "<br/>" + translate.createTimeString(instr.time) + "<br/>" + "starts " + instr.elevation + "m ASL" + "</span></td>");
+        instructionDiv.append("<td class='instr_distance'><span>" + translate.createDistanceString(distance, useMiles) + "<br/>" + translate.createTimeString(instr.time) + "<br/>" + "starts " + lngLat[2] + "m ASL" + "</span></td>");
     }
 
     if (lngLat) {

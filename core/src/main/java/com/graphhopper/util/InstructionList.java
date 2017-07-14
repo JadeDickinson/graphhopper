@@ -98,7 +98,6 @@ public class InstructionList extends AbstractList<Instruction> {
 
             instrJson.put("street_name", instruction.getName());
             instrJson.put("time", instruction.getTime());
-            instrJson.put("elevation", instruction.getFirstEle());
             instrJson.put("distance", Helper.round(instruction.getDistance(), 3));
             instrJson.put("sign", instruction.getSign());
             instrJson.putAll(instruction.getExtraInfoJSON());
