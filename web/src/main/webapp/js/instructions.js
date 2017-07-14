@@ -71,8 +71,14 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
     for (var m = 0; m < len; m++) {
+        if (m > 0) {
+            var prevElevation = lngLat[2];
+        }
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
+        if (m > 0) {
+            console.log("Change in elevation: " + parseInt(prevElevation - lngLat[2]));
+        }
         addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions);
     }
     var infoDiv = $("<div class='instructions_info'>");
