@@ -41155,8 +41155,7 @@ function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, deb
     instructionDiv.append(tdVar);
     var distance = instr.distance;
     if (distance > 0) {
-        debugger;
-        instructionDiv.append("<td class='instr_distance'><span>" + translate.createDistanceString(distance, useMiles) + "<br/>" + translate.createTimeString(instr.time) + "<br/>" + "starts " + lngLat[2] + "m ASL" + "</span></td>");
+        instructionDiv.append("<td class='instr_distance'><span>" + translate.createDistanceString(distance, useMiles) + "<br/>" + translate.createTimeString(instr.time) + "<br/>" + lngLat[2] + "m ASL" + "</span></td>");
     }
 
     if (lngLat) {
@@ -41194,7 +41193,6 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
-        debugger;
         addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions);
     }
     var infoDiv = $("<div class='instructions_info'>");
@@ -41207,7 +41205,6 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
             for (var m = len; m < path.instructions.length; m++) {
                 var instr = path.instructions[m];
                 var lngLat = path.points.coordinates[instr.interval[0]];
-                debugger;
                 addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles);
             }
         });
