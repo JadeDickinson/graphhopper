@@ -82,13 +82,11 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
             var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
             var changeInElevation = parseInt(nextElevation - lngLat[2]);
         }
-        if (m > 0) {
-            console.log("Change in elevation: " + changeInElevation);
-            var percentGrade = (changeInElevation / instr.distance);
-            var M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (terrain * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
-            var exactTimeInSeconds = instr.distance / velocity;
             // var kcal = (M * exactTimeInSeconds) / 4184
-        }
+        console.log("Change in elevation: " + changeInElevation);
+        var percentGrade = (changeInElevation / instr.distance);
+        var M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (terrain * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
+        var exactTimeInSeconds = instr.distance / velocity;
         addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions);
     }
     var infoDiv = $("<div class='instructions_info'>");
