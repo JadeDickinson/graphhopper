@@ -76,7 +76,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
         }
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
-        var changeInElevation = parseInt(prevElevation - lngLat[2])
+        var changeInElevation = parseInt(lngLat[2] - prevElevation)
         if (m > 0) {
             console.log("Change in elevation: " + changeInElevation);
         }
