@@ -67,9 +67,9 @@ function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, deb
 module.exports.create = function (mapLayer, path, urlForHistory, request) {
     var instructionsElement = $("<table class='instructions'>");
     var debugInstructions = request.api_params.debug_instructions;
-
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
+
     var weight = 60;
     var load = 0;
     var terrain = 1.0;
@@ -77,16 +77,16 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     for (var m = 0; m < len; m++) {
         if (m > 0) {
             var prevElevation = lngLat[2];
-            var distanceForCalories = path.instructions[m-1].distance;
         }
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
         var changeInElevation = parseInt(lngLat[2] - prevElevation);
         if (m > 0) {
             console.log("Change in elevation: " + changeInElevation);
-            var percentGrade = (changeInElevation / distanceForCalories);
-            var exactTimeInSeconds = distanceForCalories / velocity
+            var percentGrade = (changeInElevation / instr.distance);
             var M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (terrain * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
+            var exactTimeInSeconds = instr.distance / velocity;
+            // var kcal = (M * exactTimeInSeconds) / 4184
         }
         addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions);
     }
