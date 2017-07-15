@@ -70,15 +70,22 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
 
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
+    var weight = 60;
+    var load = 0;
+    var terrain = 1.0;
+    var velocity = 1.34112;
     for (var m = 0; m < len; m++) {
         if (m > 0) {
             var prevElevation = lngLat[2];
+            var distanceForCalories = path.instructions[m-1].distance;
         }
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
-        var changeInElevation = parseInt(lngLat[2] - prevElevation)
+        var changeInElevation = parseInt(lngLat[2] - prevElevation);
         if (m > 0) {
             console.log("Change in elevation: " + changeInElevation);
+            var percentGrade = (changeInElevation / distanceForCalories);
+            var M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (terrain * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)))
         }
         addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions);
     }
