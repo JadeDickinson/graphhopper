@@ -75,12 +75,13 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     var terrain = 1.0;
     var velocity = 1.34112;
     for (var m = 0; m < len; m++) {
-        if (m > 0) {
-            var prevElevation = lngLat[2];
-        }
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
-        var changeInElevation = parseInt(lngLat[2] - prevElevation);
+        if (m < len - 2) {
+            var nextInstr = path.instructions[m+1];
+            var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
+            var changeInElevation = parseInt(nextElevation - lngLat[2]);
+        }
         if (m > 0) {
             console.log("Change in elevation: " + changeInElevation);
             var percentGrade = (changeInElevation / instr.distance);
