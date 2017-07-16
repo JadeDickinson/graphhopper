@@ -69,7 +69,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     var debugInstructions = request.api_params.debug_instructions;
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
-
+    debugger;
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
@@ -91,7 +91,13 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
             for (var m = len; m < path.instructions.length; m++) {
                 var instr = path.instructions[m];
                 var lngLat = path.points.coordinates[instr.interval[0]];
-                addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles);
+                if (m < path.instructions.length - 1) {
+                    var nextInstr = path.instructions[m+1];
+                    var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
+                    var changeInElevation = parseInt(nextElevation - lngLat[2]);
+                }
+                var kcal = calculateKcal(instr.distance, changeInElevation);
+                addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
             }
         });
         instructionsElement.append(moreDiv);
