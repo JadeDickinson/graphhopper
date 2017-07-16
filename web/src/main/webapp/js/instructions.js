@@ -102,7 +102,6 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
             }
             var kcal = (M * exactTimeInSeconds) / 4184;
         }
-        addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions);
         addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
     }
     var infoDiv = $("<div class='instructions_info'>");
