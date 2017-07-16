@@ -70,10 +70,6 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
 
-    var weight = 60;
-    var load = 0;
-    var terrain = 1.0;
-    var velocity = 1.34112;
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
@@ -82,25 +78,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
             var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
             var changeInElevation = parseInt(nextElevation - lngLat[2]);
         }
-        if (instr.distance == 0) {
-            var kcal = 0;
-        } else {
-            var percentGrade = (changeInElevation / instr.distance) * 100;
-            var exactTimeInSeconds = instr.distance / velocity;
-
-            var C = 0;
-            if (percentGrade < 0) {
-                if (percentGrade <= -8) {
-                    percentGrade = -8;
-                }
-                C = 1 * (((-percentGrade * (weight + load) * velocity)/3.5) - (((weight + load) * ((-percentGrade + 6)*(-percentGrade + 6))) /weight) + (25 - (velocity * velocity)));
-            }
-            var M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (terrain * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
-            if (C > 0) {
-                M = M - C;
-            }
-            var kcal = (M * exactTimeInSeconds) / 4184;
-        }
+        var kcal = calculateKcal(instr.distance, changeInElevation);
         addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
     }
     var infoDiv = $("<div class='instructions_info'>");
@@ -169,3 +147,32 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     infoDiv.append(hiddenDiv);
     return infoDiv;
 };
+
+function calculateKcal(distance, changeInElevation) {
+    var weight = 68;
+    var load = 0;
+    var terrain = 1.0;
+    var velocity = 1.34112;
+
+    if (distance == 0) {
+        var kcal = 0;
+    } else {
+        var percentGrade = (changeInElevation / distance) * 100;
+        var exactTimeInSeconds = distance / velocity;
+
+        var C = 0;
+        if (percentGrade < 0) {
+            if (percentGrade <= -8) {
+                percentGrade = -8;
+            }
+            C = 1 * (((-percentGrade * (weight + load) * velocity)/3.5) - (((weight + load) * ((-percentGrade + 6)*(-percentGrade + 6))) /weight) + (25 - (velocity * velocity)));
+        }
+        var M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (terrain * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
+        if (C > 0) {
+            M = M - C;
+        }
+        var kcal = (M * exactTimeInSeconds) / 4184;
+    }
+    return kcal;
+};
+
