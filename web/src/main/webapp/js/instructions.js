@@ -149,7 +149,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
 };
 
 function calculateKcal(distance, changeInElevation) {
-    var weight = 68;
+    var weight = 60;
     var load = 0;
     var terrain = 1.0;
     var velocity = 1.34112;
