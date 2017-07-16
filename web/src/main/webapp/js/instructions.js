@@ -3,7 +3,7 @@ var messages = require('./messages.js');
 
 var routeSegmentPopup = null;
 
-function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, debugInstructions) {
+function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, debugInstructions, kcal) {
     var sign = instr.sign;
     if (instrIndex === 0)
         sign = "marker-icon-green";
@@ -35,7 +35,7 @@ function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, deb
     instructionDiv.append(tdVar);
     var distance = instr.distance;
     if (distance > 0) {
-        instructionDiv.append("<td class='instr_distance'><span>" + translate.createDistanceString(distance, useMiles) + "<br/>" + translate.createTimeString(instr.time) + "<br/>" + lngLat[2] + "m ASL" + "</span></td>");
+        instructionDiv.append("<td class='instr_distance'><span>" + translate.createDistanceString(distance, useMiles) + "<br/>" + translate.createTimeString(instr.time) + "<br/>" + lngLat[2] + "m ASL" + "<br/>" + kcal + " kcal" + "</span></td>");
     }
 
     if (lngLat) {
@@ -103,6 +103,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
             var kcal = (M * exactTimeInSeconds) / 4184;
         }
         addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions);
+        addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
     }
     var infoDiv = $("<div class='instructions_info'>");
     infoDiv.append(instructionsElement);
