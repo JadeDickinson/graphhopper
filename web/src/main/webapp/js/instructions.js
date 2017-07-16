@@ -82,7 +82,6 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
             var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
             var changeInElevation = parseInt(nextElevation - lngLat[2]);
         }
-        console.log("Change in elevation: " + changeInElevation);
         if (instr.distance == 0) {
             var kcal = 0;
         } else {
