@@ -77,7 +77,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
-        if (m < len - 2) {
+        if (m < len - 1) {
             var nextInstr = path.instructions[m+1];
             var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
             var changeInElevation = parseInt(nextElevation - lngLat[2]);
