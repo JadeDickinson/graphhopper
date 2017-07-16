@@ -84,7 +84,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
         }
             // var kcal = (M * exactTimeInSeconds) / 4184
         console.log("Change in elevation: " + changeInElevation);
-        var percentGrade = (changeInElevation / instr.distance);
+        var percentGrade = (changeInElevation / instr.distance) * 100;
         var M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (terrain * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
         var exactTimeInSeconds = instr.distance / velocity;
         addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions);
