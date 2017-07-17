@@ -4,7 +4,7 @@ import com.graphhopper.routing.util.FlagEncoder;
 import com.graphhopper.routing.util.HintsMap;
 import com.graphhopper.util.EdgeIteratorState;
 
-public class KilocalorieWeighting extends AbstractWeighting {
+public class KilocalorieWeighting extends FastestWeighting {
     protected KilocalorieWeighting(FlagEncoder encoder) {
         super(encoder);
     }
@@ -20,17 +20,8 @@ public class KilocalorieWeighting extends AbstractWeighting {
     }
 
     @Override
-    public long calcMillis(EdgeIteratorState edgeState, boolean reverse, int prevOrNextEdgeId) {
-        return 0;
-    }
-
-    @Override
     public String getName() {
         return "kilocalorie";
     }
 
-    @Override
-    public boolean matches(HintsMap map) {
-        return false;
-    }
 }
