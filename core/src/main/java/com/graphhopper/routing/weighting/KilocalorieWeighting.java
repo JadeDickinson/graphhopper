@@ -25,13 +25,8 @@ public class KilocalorieWeighting extends AbstractWeighting {
     }
 
     @Override
-    public FlagEncoder getFlagEncoder() {
-        return null;
-    }
-
-    @Override
     public String getName() {
-        return null;
+        return "kilocalorie";
     }
 
     @Override
