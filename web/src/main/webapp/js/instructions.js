@@ -69,7 +69,6 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     var debugInstructions = request.api_params.debug_instructions;
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
-    debugger;
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
