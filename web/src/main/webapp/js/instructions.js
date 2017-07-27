@@ -157,13 +157,13 @@ function calculateKcal(distance, changeInElevation) {
     var weight = 60;
     var load = 0;
     var terrain = 1.0;
-    // Correct for slopes
-    var velocity = ((6*Math.exp(-3.5 * ((changeInElevation/distance) + 0.05))) * 1000) / 60 / 60;
 
     if (distance == 0) {
         var kcal = 0;
     } else {
         var percentGrade = (changeInElevation / distance) * 100;
+        // Correct for slopes
+        var velocity = ((6*Math.exp(-3.5 * ((changeInElevation/distance) + 0.05))) * 1000) / 60 / 60;
         var exactTimeInSeconds = distance / velocity;
 
         var C = 0;
