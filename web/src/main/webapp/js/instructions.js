@@ -163,14 +163,14 @@ function calculateKcal(distance, changeInElevation) {
     } else {
         var percentGrade = (changeInElevation / distance) * 100;
         // Correct for slopes
+        if (percentGrade <= -8) {
+            percentGrade = -8;
+        }
         var velocity = ((6*Math.exp(-3.5 * ((changeInElevation/distance) + 0.05))) * 1000) / 60 / 60;
         var exactTimeInSeconds = distance / velocity;
 
         var C = 0;
         if (percentGrade < 0) {
-            if (percentGrade <= -8) {
-                percentGrade = -8;
-            }
             C = 1 * (((-percentGrade * (weight + load) * velocity)/3.5) - (((weight + load) * ((-percentGrade + 6)*(-percentGrade + 6))) /weight) + (25 - (velocity * velocity)));
         }
         var M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (terrain * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
