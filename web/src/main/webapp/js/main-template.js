@@ -629,6 +629,9 @@ function routeLatLng(request, doQuery) {
                 else
                     tempRouteInfo = translate.tr("pt_route_info_walking", [tempArrTime, tempDistance]);
             } else {
+                var total = 0
+                for(var i in path.instructions) {total += path.instructions[i].time;}
+                path.time = total;
                 var tmpDuration = translate.createTimeString(path.time);
                 tempRouteInfo = translate.tr("route_info", [tempDistance, tmpDuration]);
             }
