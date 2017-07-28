@@ -77,7 +77,9 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
             var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
             var changeInElevation = parseInt(nextElevation - lngLat[2]);
         }
-        var kcal = calculateKcal(instr.distance, changeInElevation);
+        var kcalAndTime = calculateKcal(instr.distance, changeInElevation);
+        instr.time = kcalAndTime.pop() * 1000;
+        var kcal = kcalAndTime.pop();
         addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
     }
     var infoDiv = $("<div class='instructions_info'>");
@@ -91,11 +93,13 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
                 var instr = path.instructions[m];
                 var lngLat = path.points.coordinates[instr.interval[0]];
                 if (m < path.instructions.length - 1) {
-                    var nextInstr = path.instructions[m+1];
+                    var nextInstr = path.instructions[m + 1];
                     var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
                     var changeInElevation = parseInt(nextElevation - lngLat[2]);
                 }
-                var kcal = calculateKcal(instr.distance, changeInElevation);
+                var kcalAndTime = calculateKcal(instr.distance, changeInElevation);
+                instr.time = kcalAndTime.pop() * 1000;
+                var kcal = kcalAndTime.pop();
                 addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
             }
         });
@@ -157,9 +161,10 @@ function calculateKcal(distance, changeInElevation) {
     var weight = 60;
     var load = 0;
     var terrain = 1.0;
-
+    var kcalAndSeconds = new Array;
     if (distance == 0) {
-        var kcal = 0;
+        kcalAndSeconds.push(0);
+        kcalAndSeconds.push(0);
     } else {
         var percentGrade = (changeInElevation / distance) * 100;
         // Correct for slopes
@@ -177,9 +182,10 @@ function calculateKcal(distance, changeInElevation) {
         if (C > 0) {
             M = M - C;
         }
-        var kcal = (M * exactTimeInSeconds) / 4184;
+        kcalAndSeconds.push((M * exactTimeInSeconds) / 4184);
+        kcalAndSeconds.push(exactTimeInSeconds);
     }
-    return kcal;
+    return kcalAndSeconds;
 };
 
 function calculateExactTimeInSeconds(distance, velocity) {
