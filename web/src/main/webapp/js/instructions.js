@@ -65,6 +65,7 @@ function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, deb
 }
 
 module.exports.create = function (mapLayer, path, urlForHistory, request) {
+    var totalCals;
     var instructionsElement = $("<table class='instructions'>");
     var debugInstructions = request.api_params.debug_instructions;
     var partialInstr = path.instructions.length > 100;
@@ -81,6 +82,11 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
         instr.time = kcalAndTime.pop() * 1000;
         var kcal = kcalAndTime.pop();
         addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
+        if (totalCals == undefined) {
+            totalCals = calculateTotalCalories(0, kcal);
+        } else {
+            totalCals = calculateTotalCalories(totalCals, kcal);
+        }
     }
     var infoDiv = $("<div class='instructions_info'>");
     infoDiv.append(instructionsElement);
@@ -101,6 +107,11 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
                 instr.time = kcalAndTime.pop() * 1000;
                 var kcal = kcalAndTime.pop();
                 addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
+                if (totalCals == undefined) {
+                    totalCals = calculateTotalCalories(0, kcal);
+                } else {
+                    totalCals = calculateTotalCalories(totalCals, kcal);
+                }
             }
         });
         instructionsElement.append(moreDiv);
@@ -191,4 +202,9 @@ function calculateKcal(distance, changeInElevation) {
 function calculateExactTimeInSeconds(distance, velocity) {
     var exactTimeInSeconds = distance / velocity;
     return exactTimeInSeconds;
+};
+
+function calculateTotalCalories(totalCals, kcal) {
+    totalCals = totalCals + kcal;
+    return totalCals;
 }
