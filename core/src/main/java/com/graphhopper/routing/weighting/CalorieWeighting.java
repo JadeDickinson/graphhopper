@@ -6,21 +6,21 @@ import com.graphhopper.util.EdgeIteratorState;
 import com.graphhopper.util.PMap;
 import com.graphhopper.util.Parameters.Routing;
 
-public class CustomWeighting extends AbstractWeighting {
+public class CalorieWeighting extends AbstractWeighting {
     protected final static double SPEED_CONV = 3.6;
     private final double headingPenalty;
     private final long headingPenaltyMillis;
     private final double maxSpeed;
 
 
-    public CustomWeighting(FlagEncoder encoder, PMap map) {
+    public CalorieWeighting(FlagEncoder encoder, PMap map) {
         super(encoder);
         headingPenalty = map.getDouble(Routing.HEADING_PENALTY, Routing.DEFAULT_HEADING_PENALTY);
         headingPenaltyMillis = Math.round(headingPenalty * 1000);
         maxSpeed = encoder.getMaxSpeed() / SPEED_CONV;
     }
 
-    public CustomWeighting(FlagEncoder encoder) {
+    public CalorieWeighting(FlagEncoder encoder) {
         this(encoder, new HintsMap(0));
     }
 
@@ -57,6 +57,6 @@ public class CustomWeighting extends AbstractWeighting {
 
     @Override
     public String getName() {
-        return "customxx";
+        return "calorie";
     }
 }
