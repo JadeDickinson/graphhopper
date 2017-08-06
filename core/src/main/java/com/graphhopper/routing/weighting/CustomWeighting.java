@@ -57,6 +57,6 @@ public class CustomWeighting extends AbstractWeighting {
 
     @Override
     public String getName() {
-        return "custom";
+        return "customxx";
     }
 }
