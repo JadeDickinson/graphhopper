@@ -1,9 +1,8 @@
 var translate = require('./translate.js');
 var messages = require('./messages.js');
-
 var routeSegmentPopup = null;
 
-function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, debugInstructions, kcal) {
+function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, debugInstructions, kcal, totalCals) {
     var sign = instr.sign;
     if (instrIndex === 0)
         sign = "marker-icon-green";
@@ -25,6 +24,9 @@ function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, deb
         var indiPic = "<img class='pic' style='vertical-align: middle' src='" +
                 dirname + "/img/" + sign + ".png'/>";
         instructionDiv.append("<td class='instr_pic'>" + indiPic + "</td>");
+        if (sign == "marker-icon-red") {
+            instructionDiv.append("<td class='kcal'>" + "Total calories required: " + totalCals.toFixed(2) + "kcal" + "</td>");
+        }
     } else {
         instructionDiv.append("<td class='instr_pic'/>");
     }
@@ -81,12 +83,12 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
         var kcalAndTime = calculateKcal(instr.distance, changeInElevation);
         instr.time = kcalAndTime.pop() * 1000;
         var kcal = kcalAndTime.pop();
-        addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
         if (totalCals == undefined) {
             totalCals = calculateTotalCalories(0, kcal);
         } else {
             totalCals = calculateTotalCalories(totalCals, kcal);
         }
+        addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2), totalCals);
     }
     var infoDiv = $("<div class='instructions_info'>");
     infoDiv.append(instructionsElement);
@@ -106,12 +108,12 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
                 var kcalAndTime = calculateKcal(instr.distance, changeInElevation);
                 instr.time = kcalAndTime.pop() * 1000;
                 var kcal = kcalAndTime.pop();
-                addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
                 if (totalCals == undefined) {
                     totalCals = calculateTotalCalories(0, kcal);
                 } else {
                     totalCals = calculateTotalCalories(totalCals, kcal);
                 }
+                addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2), totalCals);
             }
         });
         instructionsElement.append(moreDiv);
