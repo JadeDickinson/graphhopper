@@ -899,7 +899,6 @@ public class GraphHopper implements GraphHopperAPI {
         } else if ("curvature".equalsIgnoreCase(weightingStr)) {
             if (encoder.supports(CurvatureWeighting.class))
                 weighting = new CurvatureWeighting(encoder, hintsMap);
-
         } else if ("short_fastest".equalsIgnoreCase(weightingStr)) {
             weighting = new ShortFastestWeighting(encoder, hintsMap);
         } else if ("calorie".equalsIgnoreCase(weightingStr)) {
