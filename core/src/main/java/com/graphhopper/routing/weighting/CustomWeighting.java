@@ -26,7 +26,7 @@ public class CustomWeighting extends AbstractWeighting {
 
     @Override
     public double getMinWeight(double distance) {
-        return distance / maxSpeed;
+        return distance * maxSpeed;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class CustomWeighting extends AbstractWeighting {
         if (unfavoredEdge)
             time += headingPenalty;
 
-        return time;
+        return time * 100;
     }
 
     @Override
