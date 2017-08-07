@@ -23,6 +23,6 @@ public class CalorieWeightingTest {
     @Test
     public void testEncoderIsFoot() {
         Weighting instance = new CalorieWeighting(encoder);
-        assertEquals(encoder.toString(), "foot");
+        assertEquals(instance.toString(), "calorie|foot");
     }
 }
