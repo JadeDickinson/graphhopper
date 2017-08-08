@@ -29,6 +29,11 @@ public class CalorieWeighting extends AbstractWeighting {
         return distance / maxSpeed;
     }
 
+    // Temporary method
+    public double getSpeedConv() {
+        return SPEED_CONV;
+    }
+
     @Override
     public double calcWeight(EdgeIteratorState edge, boolean reverse, int prevOrNextEdgeId) {
         double speed = reverse ? flagEncoder.getReverseSpeed(edge.getFlags()) : flagEncoder.getSpeed(edge.getFlags());
