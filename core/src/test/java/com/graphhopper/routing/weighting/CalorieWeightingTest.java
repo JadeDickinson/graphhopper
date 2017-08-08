@@ -38,5 +38,10 @@ public class CalorieWeightingTest {
         CalorieWeighting calorieInstance = (CalorieWeighting)instance;
         double expectedSpeedConv = calorieInstance.getSpeedConv();
         assertEquals(expectedSpeedConv, 3.6, 0);
+
+        double expectedTime = expectedDistance / expectedSpeed * expectedSpeedConv;
+        double actualTime = instance.calcWeight(virtualEdge, false, virtualEdge.getOriginalTraversalKey());
+        assertEquals(expectedTime, actualTime, 0);
+
     }
 }
