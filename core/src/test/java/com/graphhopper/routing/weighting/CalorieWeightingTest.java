@@ -25,4 +25,18 @@ public class CalorieWeightingTest {
         Weighting instance = new CalorieWeighting(encoder);
         assertEquals(instance.toString(), "calorie|foot");
     }
+
+    @Test
+    public void checkVirtualEdgeProperties() {
+        Weighting instance = new CalorieWeighting(encoder, new PMap());
+        VirtualEdgeIteratorState virtualEdge = new VirtualEdgeIteratorState(0, 1, 1, 2, 20,
+                encoder.setProperties(10, true, true), "test", Helper.createPointList(51, 0, 51, 1));
+        double expectedSpeed = instance.getFlagEncoder().getSpeed(virtualEdge.getFlags());
+        assertEquals(expectedSpeed, 10.0, 0);
+        double expectedDistance = virtualEdge.getDistance();
+        assertEquals(expectedDistance, 20, 0);
+        CalorieWeighting calorieInstance = (CalorieWeighting)instance;
+        double expectedSpeedConv = calorieInstance.getSpeedConv();
+        assertEquals(expectedSpeedConv, 3.6, 0);
+    }
 }
