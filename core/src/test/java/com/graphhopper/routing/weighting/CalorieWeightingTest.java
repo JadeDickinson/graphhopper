@@ -93,4 +93,14 @@ public class CalorieWeightingTest {
         double expectedVelocity = (6*Math.exp(-3.5 * ((instance.calcPercentGrade(virtualEdge)*0.01) + 0.05)) * 1000) / 60 / 60;
         assertEquals(expectedVelocity, velocity, 0);
     }
+
+    @Test
+    public void testCalcExactTimeInSeconds() {
+        CalorieWeighting instance = new CalorieWeighting(encoder, new PMap());
+        VirtualEdgeIteratorState virtualEdge = new VirtualEdgeIteratorState(0, 1, 1, 2, 20,
+                encoder.setProperties(10, true, true), "test", Helper.createPointList3D(51.518224,-0.155107, 45, 51.518117,-0.155702, 38));
+        double expectedTime = 23.456569816934746;
+        double time = instance.calcExactTimeInSeconds(virtualEdge);
+        assertEquals(expectedTime, time, 0);
+    }
 }
