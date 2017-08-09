@@ -54,6 +54,12 @@ public class CalorieWeighting extends AbstractWeighting {
         double distance = pl.calcDistance(new DistanceCalcEarth());
         return distance;
     }
+
+    public double calcPercentGrade(EdgeIteratorState edge) {
+        double elevationChange = calcElevationChange(edge, false);
+        double distance = calcDistance(edge);
+        double percentGrade = elevationChange / distance * 100;
+        return percentGrade;
     }
 
     @Override
