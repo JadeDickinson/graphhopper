@@ -48,11 +48,8 @@ public class CalorieWeighting extends AbstractWeighting {
             firstElevation = ((GHPoint3D)itr.next()).getElevation();
             secondElevation = ((GHPoint3D)itr.next()).getElevation();
         }
-        if (reverse == false) {
-            return secondElevation - firstElevation;
-        } else {
-            return firstElevation - secondElevation;
-        }
+        if (reverse == false) return secondElevation - firstElevation;
+        else return firstElevation - secondElevation;
     }
 
     @Override
