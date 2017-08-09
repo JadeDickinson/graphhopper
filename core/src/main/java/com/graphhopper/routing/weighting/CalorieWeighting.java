@@ -52,6 +52,11 @@ public class CalorieWeighting extends AbstractWeighting {
         else return firstElevation - secondElevation;
     }
 
+    public double calcDistance(EdgeIteratorState edge) {
+        PointList pl = edge.fetchWayGeometry(3);
+        return pl.calcDistance(new DistanceCalcEarth());
+    }
+
     @Override
     public double calcWeight(EdgeIteratorState edge, boolean reverse, int prevOrNextEdgeId) {
         double speed = reverse ? flagEncoder.getReverseSpeed(edge.getFlags()) : flagEncoder.getSpeed(edge.getFlags());
