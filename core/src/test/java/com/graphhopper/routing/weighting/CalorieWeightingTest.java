@@ -3,16 +3,11 @@ package com.graphhopper.routing.weighting;
 import com.graphhopper.routing.VirtualEdgeIteratorState;
 import com.graphhopper.routing.util.EncodingManager;
 import com.graphhopper.routing.util.FlagEncoder;
-import com.graphhopper.storage.GraphBuilder;
-import com.graphhopper.storage.GraphHopperStorage;
 import com.graphhopper.util.*;
-import com.graphhopper.util.Parameters.Routing;
-import com.graphhopper.util.shapes.GHPoint3D;
 import org.junit.Test;
 
 import java.util.Iterator;
 
-import static com.graphhopper.util.GHUtility.createMockedEdgeIteratorState;
 import static org.junit.Assert.assertEquals;
 
 public class CalorieWeightingTest {
@@ -45,25 +40,11 @@ public class CalorieWeightingTest {
     }
 
     @Test
-    public void checkVirtualEdgeElevation() {
+    public void testCalcElevationChange() {
+        CalorieWeighting instance = new CalorieWeighting(encoder, new PMap());
         VirtualEdgeIteratorState virtualEdge = new VirtualEdgeIteratorState(0, 1, 1, 2, 20,
                 encoder.setProperties(10, true, true), "test", Helper.createPointList3D(51, 0, 10, 51, 1, 9));
-        PointList pl = virtualEdge.fetchWayGeometry(3);
-        Iterator itr = pl.iterator();
-        int i = 0;
-        double firstElevation = 0;
-        double secondElevation = 0;
-        while(itr.hasNext()) {
-            GHPoint3D element = (GHPoint3D)itr.next();
-            if(i == 0) {
-                firstElevation = element.getElevation();
-            } else {
-                secondElevation = element.getElevation();
-            }
-            i+=1;
-        }
-        assertEquals(firstElevation, 10.0, 0);
-        assertEquals(secondElevation, 9.0, 0);
-//        Be aware of PointList's calcDistance method
+        double elevationChange = instance.calcElevationChange(virtualEdge, false);
+        assertEquals(-1.0, elevationChange, 0);
     }
 }
