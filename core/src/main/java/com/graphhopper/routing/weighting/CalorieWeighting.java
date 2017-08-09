@@ -55,34 +55,34 @@ public class CalorieWeighting extends AbstractWeighting {
         return distance;
     }
 
-    public double calcPercentGrade(EdgeIteratorState edge) {
-        double elevationChange = calcElevationChange(edge, false);
+    public double calcPercentGrade(EdgeIteratorState edge, boolean reverse) {
+        double elevationChange = calcElevationChange(edge, reverse);
         double distance = calcDistance(edge);
         double percentGrade = elevationChange / distance * 100;
         if (percentGrade < -8.0) return -8.0;
         else return percentGrade;
     }
 
-    public double calcWalkingVelocity(EdgeIteratorState edge) {
-        double percentGrade = calcPercentGrade(edge);
+    public double calcWalkingVelocity(EdgeIteratorState edge, boolean reverse) {
+        double percentGrade = calcPercentGrade(edge, reverse);
         double velocity = ((6*Math.exp(-3.5 * ((percentGrade*0.01) + 0.05)) * 1000) / 60 / 60);
         return velocity;
     }
 
-    public double calcExactTimeInSeconds(EdgeIteratorState edge) {
+    public double calcExactTimeInSeconds(EdgeIteratorState edge, boolean reverse) {
         double distance = calcDistance(edge);
-        double velocity = calcWalkingVelocity(edge);
+        double velocity = calcWalkingVelocity(edge, reverse);
         double exactTime = distance / velocity;
         return exactTime;
     }
 
-    public double calcMR(EdgeIteratorState edge) {
+    public double calcMR(EdgeIteratorState edge, boolean reverse) {
         double weight = 60;
         double load = 0;
         double terrain = 1.0;
         double C = 0;
-        double percentGrade = calcPercentGrade(edge);
-        double velocity = calcWalkingVelocity(edge);
+        double percentGrade = calcPercentGrade(edge, reverse);
+        double velocity = calcWalkingVelocity(edge, reverse);
         if (percentGrade < 0) {
             C = calcC(weight, load, percentGrade, velocity);
         }
@@ -96,9 +96,9 @@ public class CalorieWeighting extends AbstractWeighting {
         return C;
     }
 
-    public double calcKcal(EdgeIteratorState edge) {
-        double MR = calcMR(edge);
-        double exactTime = calcExactTimeInSeconds(edge);
+    public double calcKcal(EdgeIteratorState edge, boolean reverse) {
+        double MR = calcMR(edge, reverse);
+        double exactTime = calcExactTimeInSeconds(edge, reverse);
         double kcal = MR * exactTime / 4184;
         return kcal;
     }
