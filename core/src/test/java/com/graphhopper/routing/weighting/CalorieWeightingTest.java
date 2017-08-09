@@ -65,4 +65,13 @@ public class CalorieWeightingTest {
         double distance = instance.calcDistance(virtualEdge);
         assertEquals(43.0, distance, 0.2);
     }
+
+    @Test
+    public void testCalcPercentGrade() {
+        CalorieWeighting instance = new CalorieWeighting(encoder, new PMap());
+        VirtualEdgeIteratorState virtualEdge = new VirtualEdgeIteratorState(0, 1, 1, 2, 20,
+                encoder.setProperties(10, true, true), "test", Helper.createPointList3D(51.518224,-0.155107, 10, 51.518117,-0.155702, 9));
+        double percentGrade = instance.calcPercentGrade(virtualEdge);
+        assertEquals(-2.332842385816, percentGrade, 0.2);
+    }
 }
