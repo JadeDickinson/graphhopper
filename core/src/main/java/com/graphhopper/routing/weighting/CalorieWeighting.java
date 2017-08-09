@@ -42,17 +42,11 @@ public class CalorieWeighting extends AbstractWeighting {
     public double calcElevationChange(EdgeIteratorState edge, boolean reverse) {
         PointList pl = edge.fetchWayGeometry(3);
         Iterator itr = pl.iterator();
-        int i = 0;
         double firstElevation = 0;
         double secondElevation = 0;
         while(itr.hasNext()) {
-            GHPoint3D element = (GHPoint3D)itr.next();
-            if(i == 0) {
-                firstElevation = element.getElevation();
-            } else {
-                secondElevation = element.getElevation();
-            }
-            i+=1;
+            firstElevation = ((GHPoint3D)itr.next()).getElevation();
+            secondElevation = ((GHPoint3D)itr.next()).getElevation();
         }
         return secondElevation - firstElevation;
     }
