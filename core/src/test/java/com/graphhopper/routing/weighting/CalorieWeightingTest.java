@@ -47,4 +47,13 @@ public class CalorieWeightingTest {
         double elevationChange = instance.calcElevationChange(virtualEdge, false);
         assertEquals(-1.0, elevationChange, 0);
     }
+
+    @Test
+    public void testCalcElevationChangeWhereReverseIsTrue() {
+        CalorieWeighting instance = new CalorieWeighting(encoder, new PMap());
+        VirtualEdgeIteratorState virtualEdge = new VirtualEdgeIteratorState(0, 1, 1, 2, 20,
+                encoder.setProperties(10, true, true), "test", Helper.createPointList3D(51, 0, 10, 51, 1, 9));
+        double elevationChange = instance.calcElevationChange(virtualEdge, true);
+        assertEquals(1.0, elevationChange, 0);
+    }
 }
