@@ -64,7 +64,9 @@ public class CalorieWeighting extends AbstractWeighting {
     }
 
     public double calcWalkingVelocity(EdgeIteratorState edge) {
-        return 0;
+        double percentGrade = calcPercentGrade(edge);
+        double velocity = ((6*Math.exp(-3.5 * ((percentGrade*0.01) + 0.05)) * 1000) / 60 / 60);
+        return velocity;
     }
 
     @Override
