@@ -63,6 +63,10 @@ public class CalorieWeighting extends AbstractWeighting {
         else return percentGrade;
     }
 
+    public double calcWalkingVelocity(EdgeIteratorState edge) {
+        return 0;
+    }
+
     @Override
     public double calcWeight(EdgeIteratorState edge, boolean reverse, int prevOrNextEdgeId) {
         double speed = reverse ? flagEncoder.getReverseSpeed(edge.getFlags()) : flagEncoder.getSpeed(edge.getFlags());
