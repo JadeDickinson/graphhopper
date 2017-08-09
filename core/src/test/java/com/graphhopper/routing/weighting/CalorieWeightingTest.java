@@ -113,4 +113,16 @@ public class CalorieWeightingTest {
         double MR = instance.calcMR(virtualEdge);
         assertEquals(expectedMR, MR, 0);
     }
+
+    @Test
+    public void testCalcKcal() {
+        CalorieWeighting instance = new CalorieWeighting(encoder, new PMap());
+        VirtualEdgeIteratorState virtualEdge = new VirtualEdgeIteratorState(0, 1, 1, 2, 20,
+                encoder.setProperties(10, true, true), "test", Helper.createPointList3D(51.518224,-0.155107, 45, 51.518117,-0.155702, 38));
+        double MR = instance.calcMR(virtualEdge);
+        double time = instance.calcExactTimeInSeconds(virtualEdge);
+        double expectedKcal = MR * time / 4184;
+        double kcal = instance.calcKcal(virtualEdge);
+        assertEquals(expectedKcal, kcal, 0);
+    }
 }
