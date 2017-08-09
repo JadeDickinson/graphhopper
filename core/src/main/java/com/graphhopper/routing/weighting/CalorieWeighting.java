@@ -59,7 +59,8 @@ public class CalorieWeighting extends AbstractWeighting {
         double elevationChange = calcElevationChange(edge, false);
         double distance = calcDistance(edge);
         double percentGrade = elevationChange / distance * 100;
-        return percentGrade;
+        if (percentGrade < -8.0) return -8.0;
+        else return percentGrade;
     }
 
     @Override
