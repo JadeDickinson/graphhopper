@@ -2,11 +2,8 @@ package com.graphhopper.routing.weighting;
 
 import com.graphhopper.routing.util.FlagEncoder;
 import com.graphhopper.routing.util.HintsMap;
-import com.graphhopper.util.EdgeIterator;
-import com.graphhopper.util.EdgeIteratorState;
-import com.graphhopper.util.PMap;
+import com.graphhopper.util.*;
 import com.graphhopper.util.Parameters.Routing;
-import com.graphhopper.util.PointList;
 import com.graphhopper.util.shapes.GHPoint3D;
 
 import java.util.Iterator;
