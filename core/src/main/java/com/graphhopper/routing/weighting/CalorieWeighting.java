@@ -70,6 +70,11 @@ public class CalorieWeighting extends AbstractWeighting {
     }
 
     public double calcExactTimeInSeconds(EdgeIteratorState edge) {
+        double distance = calcDistance(edge);
+        double velocity = calcWalkingVelocity(edge);
+        double exactTime = distance / velocity;
+        return exactTime;
+    }
         return 0;
     }
 
