@@ -51,7 +51,9 @@ public class CalorieWeighting extends AbstractWeighting {
 
     public double calcDistance(EdgeIteratorState edge) {
         PointList pl = edge.fetchWayGeometry(3);
-        return pl.calcDistance(new DistanceCalcEarth());
+        double distance = pl.calcDistance(new DistanceCalcEarth());
+        return distance;
+    }
     }
 
     @Override
