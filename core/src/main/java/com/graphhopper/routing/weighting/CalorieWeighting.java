@@ -96,6 +96,13 @@ public class CalorieWeighting extends AbstractWeighting {
         return C;
     }
 
+    public double calcKcal(EdgeIteratorState edge) {
+        double MR = calcMR(edge);
+        double exactTime = calcExactTimeInSeconds(edge);
+        double kcal = MR * exactTime / 4184;
+        return kcal;
+    }
+
     @Override
     public double calcWeight(EdgeIteratorState edge, boolean reverse, int prevOrNextEdgeId) {
         double speed = reverse ? flagEncoder.getReverseSpeed(edge.getFlags()) : flagEncoder.getSpeed(edge.getFlags());
