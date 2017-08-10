@@ -41,9 +41,13 @@ public class CalorieWeighting extends AbstractWeighting {
         Iterator itr = pl.iterator();
         double firstElevation = 0;
         double secondElevation = 0;
+        int i = 0;
         while(itr.hasNext()) {
-            firstElevation = ((GHPoint3D)itr.next()).getElevation();
-            secondElevation = ((GHPoint3D)itr.next()).getElevation();
+            if (i == 0) {
+                firstElevation = ((GHPoint3D)itr.next()).getElevation();
+            } else {
+                secondElevation = ((GHPoint3D)itr.next()).getElevation();
+            }
         }
         if (reverse == false) return secondElevation - firstElevation;
         else return firstElevation - secondElevation;
