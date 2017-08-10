@@ -81,8 +81,6 @@ $(document).ready(function (e) {
             // https://github.com/defunkt/jquery-pjax/issues/143#issuecomment-6194330
 
             var state = History.getState();
-            console.log(state);
-            console.log("In state weighting is: " + state.data.weighting);
             initFromParams(state.data, true);
         });
     }
