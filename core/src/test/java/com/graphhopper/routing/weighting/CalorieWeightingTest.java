@@ -6,8 +6,6 @@ import com.graphhopper.routing.util.FlagEncoder;
 import com.graphhopper.util.*;
 import org.junit.Test;
 
-import java.util.Iterator;
-
 import static org.junit.Assert.assertEquals;
 
 public class CalorieWeightingTest {
