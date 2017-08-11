@@ -31,10 +31,6 @@ public class CalorieWeighting extends AbstractWeighting {
         return distance / maxSpeed;
     }
 
-    // Temporary method
-    public double getSpeedConv() {
-        return SPEED_CONV;
-    }
 
     public double calcElevationChange(EdgeIteratorState edge, boolean reverse) {
         PointList pl = edge.fetchWayGeometry(3);
