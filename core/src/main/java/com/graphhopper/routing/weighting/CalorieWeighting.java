@@ -52,9 +52,6 @@ public class CalorieWeighting extends AbstractWeighting {
     public double calcDistance(EdgeIteratorState edge) {
         PointList pl = edge.fetchWayGeometry(3);
         double distance = pl.calcDistance(new DistanceCalcEarth());
-        if (Double.isNaN(distance)) {
-            throw new IllegalStateException("calcDistance should not return NaN");
-        }
         return distance;
     }
 
@@ -72,9 +69,6 @@ public class CalorieWeighting extends AbstractWeighting {
     public double calcWalkingVelocity(EdgeIteratorState edge, boolean reverse) {
         double percentGrade = calcPercentGrade(edge, reverse);
         double velocity = ((6*Math.exp(-3.5 * ((percentGrade*0.01) + 0.05)) * 1000) / 60 / 60);
-        if (Double.isNaN(velocity)) {
-            throw new IllegalStateException("calcWalkingVelocity should not return NaN");
-        }
         return velocity;
     }
 
@@ -82,9 +76,6 @@ public class CalorieWeighting extends AbstractWeighting {
         double distance = calcDistance(edge);
         double velocity = calcWalkingVelocity(edge, reverse);
         double exactTime = distance / velocity;
-        if (Double.isNaN(exactTime)) {
-            throw new IllegalStateException("calcExactTimeInSeconds should not return NaN");
-        }
         return exactTime;
     }
 
@@ -112,14 +103,8 @@ public class CalorieWeighting extends AbstractWeighting {
         }
         double SMR = 1.2 * BMR;
         if (SMR > MR) {
-            if (Double.isNaN(SMR)) {
-                throw new IllegalStateException("calcMR (SMR) should not return NaN");
-            }
             return SMR;
         } else {
-            if (Double.isNaN(MR)) {
-                throw new IllegalStateException("calcMR (MR) should not return NaN");
-            }
             return MR;
         }
 //        return MR;
