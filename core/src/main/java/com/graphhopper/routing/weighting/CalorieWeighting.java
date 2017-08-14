@@ -68,7 +68,7 @@ public class CalorieWeighting extends AbstractWeighting {
             return 0;
         }
         double percentGrade = elevationChange / distance * 100;
-        if (percentGrade < -10.0) return -10.0;
+        if (percentGrade < -8.0) return -8.0;
         else return percentGrade;
     }
 
