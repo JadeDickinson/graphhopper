@@ -195,7 +195,12 @@ function calculateKcal(distance, changeInElevation) {
         if (C > 0) {
             M = M - C;
         }
-        kcalAndSeconds.push((M * exactTimeInSeconds) / 4184);
+        var kcal = (M * exactTimeInSeconds) / 4184;
+        if (kcal < 0) {
+            kcalAndSeconds.push(0);
+        } else {
+            kcalAndSeconds.push(kcal);
+        }
         kcalAndSeconds.push(exactTimeInSeconds);
     }
     return kcalAndSeconds;
