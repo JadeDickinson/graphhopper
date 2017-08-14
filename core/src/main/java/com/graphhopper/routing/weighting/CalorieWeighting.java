@@ -36,13 +36,25 @@ public class CalorieWeighting extends AbstractWeighting {
         PointList pl = edge.fetchWayGeometry(3);
         double firstElevation = pl.getElevation(0);
         double secondElevation = pl.getElevation(1);
-        if (reverse == false) return secondElevation - firstElevation;
-        else return firstElevation - secondElevation;
+        if (reverse == false) {
+            if (Double.isNaN(secondElevation - firstElevation)) {
+                throw new IllegalStateException("calcElevationChange should not return NaN");
+            }
+            return secondElevation - firstElevation;
+        } else {
+            if (Double.isNaN(firstElevation - secondElevation)) {
+                throw new IllegalStateException("calcElevationChange should not return NaN");
+            }
+            return firstElevation - secondElevation;
+        }
     }
 
     public double calcDistance(EdgeIteratorState edge) {
         PointList pl = edge.fetchWayGeometry(3);
         double distance = pl.calcDistance(new DistanceCalcEarth());
+        if (Double.isNaN(distance)) {
+            throw new IllegalStateException("distance should not return NaN");
+        }
         return distance;
     }
 
@@ -51,12 +63,18 @@ public class CalorieWeighting extends AbstractWeighting {
         double distance = calcDistance(edge);
         double percentGrade = elevationChange / distance * 100;
         if (percentGrade < -8.0) return -8.0;
+        if (Double.isNaN(percentGrade)) {
+            throw new IllegalStateException("percentGrade should not return NaN");
+        }
         else return percentGrade;
     }
 
     public double calcWalkingVelocity(EdgeIteratorState edge, boolean reverse) {
         double percentGrade = calcPercentGrade(edge, reverse);
         double velocity = ((6*Math.exp(-3.5 * ((percentGrade*0.01) + 0.05)) * 1000) / 60 / 60);
+        if (Double.isNaN(velocity)) {
+            throw new IllegalStateException("velocity should not return NaN");
+        }
         return velocity;
     }
 
@@ -64,6 +82,9 @@ public class CalorieWeighting extends AbstractWeighting {
         double distance = calcDistance(edge);
         double velocity = calcWalkingVelocity(edge, reverse);
         double exactTime = distance / velocity;
+        if (Double.isNaN(exactTime)) {
+            throw new IllegalStateException("exactTime should not return NaN");
+        }
         return exactTime;
     }
 
@@ -91,8 +112,14 @@ public class CalorieWeighting extends AbstractWeighting {
         }
         double SMR = 1.2 * BMR;
         if (SMR > MR) {
+            if (Double.isNaN(SMR)) {
+                throw new IllegalStateException("SMR should not return NaN");
+            }
             return SMR;
         } else {
+            if (Double.isNaN(MR)) {
+                throw new IllegalStateException("MR should not return NaN");
+            }
             return MR;
         }
 //        return MR;
@@ -108,6 +135,11 @@ public class CalorieWeighting extends AbstractWeighting {
         double exactTime = calcExactTimeInSeconds(edge, reverse);
         double kcal = MR * exactTime / 4184;
         return kcal;
+        if (Double.isNaN(kcal)) {
+            throw new IllegalStateException("CalcKcal should not return NaN");
+        } else {
+            return kcal;
+        }
     }
 
     @Override
