@@ -57,12 +57,18 @@ public class CalorieWeighting extends AbstractWeighting {
 
     public double calcPercentGrade(EdgeIteratorState edge, boolean reverse) {
         double elevationChange = calcElevationChange(edge, reverse);
-        double distance = calcDistance(edge);
-        double percentGrade = elevationChange / distance * 100;
-        if (percentGrade < -8.0) return -8.0;
-        if (Double.isNaN(percentGrade)) {
-            throw new IllegalStateException("calcPercentGrade should not return NaN");
+        if (Double.isNaN(elevationChange)) {
+            throw new IllegalArgumentException("elevationChange param should not be NaN");
         }
+        double distance = calcDistance(edge);
+        if (Double.isNaN(distance)) {
+            throw new IllegalArgumentException("distance param should not be NaN");
+        }
+        if (distance == 0) {
+            return 0;
+        }
+        double percentGrade = elevationChange / distance * 100;
+        if (percentGrade < -10.0) return -10.0;
         else return percentGrade;
     }
 
