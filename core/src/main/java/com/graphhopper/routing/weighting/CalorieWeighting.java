@@ -38,12 +38,12 @@ public class CalorieWeighting extends AbstractWeighting {
         double secondElevation = pl.getElevation(1);
         if (reverse == false) {
             if (Double.isNaN(secondElevation - firstElevation)) {
-                throw new IllegalStateException("calcElevationChange should not return NaN");
+                throw new IllegalArgumentException("calcElevationChange should not return NaN");
             }
             return secondElevation - firstElevation;
         } else {
             if (Double.isNaN(firstElevation - secondElevation)) {
-                throw new IllegalStateException("calcElevationChange should not return NaN");
+                throw new IllegalArgumentException("calcElevationChange should not return NaN");
             }
             return firstElevation - secondElevation;
         }
@@ -127,7 +127,7 @@ public class CalorieWeighting extends AbstractWeighting {
         double kcal = MR * exactTime / 4184;
         return kcal;
         if (Double.isNaN(kcal)) {
-            throw new IllegalStateException("calcKcal should not return NaN");
+            throw new IllegalArgumentException("calcKcal should not return NaN");
         } else {
             return kcal;
         }
