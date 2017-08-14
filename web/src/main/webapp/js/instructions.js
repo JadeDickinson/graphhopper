@@ -171,7 +171,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
 };
 
 function calculateKcal(distance, changeInElevation) {
-    var weight = 60;
+    var weight = 80;
     var load = 0;
     var terrain = 1.0;
     var kcalAndSeconds = new Array;
@@ -195,7 +195,26 @@ function calculateKcal(distance, changeInElevation) {
         if (C > 0) {
             M = M - C;
         }
-        var kcal = (M * exactTimeInSeconds) / 4184;
+        var height = 165;
+        var female = true;
+        var age = 25;
+        var BMR = 0;
+        if (female) {
+            BMR = 655 + (9.6 * weight) + (1.7 * height) - (4.7 * age);
+        } else {
+            BMR = 66 + (13.7 * weight) + (5 * height) - (6.8 * age);
+        }
+        var SMR = 1.2 * BMR;
+        var avoidUnderPrediction = SMR - BMR;
+        if (avoidUnderPrediction > M) {
+            console.log("M is " + M);
+            console.log("avoid is " + avoidUnderPrediction);
+        }
+        if (avoidUnderPrediction > M) {
+            var kcal = (avoidUnderPrediction * exactTimeInSeconds) / 4184;
+        } else {
+            var kcal = (M * exactTimeInSeconds) / 4184;
+        }
         if (kcal < 0) {
             kcalAndSeconds.push(0);
         } else {
