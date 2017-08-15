@@ -32,7 +32,7 @@ public class CalorieWeighting extends AbstractWeighting {
     }
 
 
-    public double calcElevationChange(EdgeIteratorState edge, boolean reverse) {
+    private double calcElevationChange(EdgeIteratorState edge, boolean reverse) {
         PointList pl = edge.fetchWayGeometry(3);
         double firstElevation = pl.getElevation(0);
         double secondElevation = pl.getElevation(1);
@@ -49,13 +49,13 @@ public class CalorieWeighting extends AbstractWeighting {
         }
     }
 
-    public double calcDistance(EdgeIteratorState edge) {
+    private double calcDistance(EdgeIteratorState edge) {
         PointList pl = edge.fetchWayGeometry(3);
         double distance = pl.calcDistance(new DistanceCalcEarth());
         return distance;
     }
 
-    public double calcPercentGrade(EdgeIteratorState edge, boolean reverse) {
+    private double calcPercentGrade(EdgeIteratorState edge, boolean reverse) {
         double elevationChange = calcElevationChange(edge, reverse);
         if (Double.isNaN(elevationChange)) {
             throw new IllegalArgumentException("elevationChange param should not be NaN");
@@ -72,20 +72,20 @@ public class CalorieWeighting extends AbstractWeighting {
         else return percentGrade;
     }
 
-    public double calcWalkingVelocity(EdgeIteratorState edge, boolean reverse) {
+    private double calcWalkingVelocity(EdgeIteratorState edge, boolean reverse) {
         double percentGrade = calcPercentGrade(edge, reverse);
         double velocity = ((6*Math.exp(-3.5 * ((percentGrade*0.01) + 0.05)) * 1000) / 60 / 60);
         return velocity;
     }
 
-    public double calcExactTimeInSeconds(EdgeIteratorState edge, boolean reverse) {
+    private double calcExactTimeInSeconds(EdgeIteratorState edge, boolean reverse) {
         double distance = calcDistance(edge);
         double velocity = calcWalkingVelocity(edge, reverse);
         double exactTime = distance / velocity;
         return exactTime;
     }
 
-    public double calcMR(EdgeIteratorState edge, boolean reverse) {
+    private double calcMR(EdgeIteratorState edge, boolean reverse) {
         double weight = 80;
         double load = 0;
         double terrain = 1.0;
@@ -115,12 +115,12 @@ public class CalorieWeighting extends AbstractWeighting {
         }
     }
 
-    public double calcC(double weight, double load, double percentGrade, double velocity) {
+    private double calcC(double weight, double load, double percentGrade, double velocity) {
         double C = 1 * (((-percentGrade * (weight + load) * velocity)/3.5) - (((weight + load) * ((-percentGrade + 6)*(-percentGrade + 6))) /weight) + (25 - (velocity * velocity)));
         return C;
     }
 
-    public double calcKcal(EdgeIteratorState edge, boolean reverse) {
+    private double calcKcal(EdgeIteratorState edge, boolean reverse) {
         double MR = calcMR(edge, reverse);
         double exactTime = calcExactTimeInSeconds(edge, reverse);
         double kcal = MR * exactTime / 4184;
