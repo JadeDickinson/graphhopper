@@ -86,7 +86,7 @@ public class CalorieWeighting extends AbstractWeighting {
     }
 
     public double calcMR(EdgeIteratorState edge, boolean reverse) {
-        double weight = 60;
+        double weight = 80;
         double load = 0;
         double terrain = 1.0;
         double C = 0;
@@ -113,7 +113,6 @@ public class CalorieWeighting extends AbstractWeighting {
         } else {
             return MR;
         }
-//        return MR;
     }
 
     public double calcC(double weight, double load, double percentGrade, double velocity) {
