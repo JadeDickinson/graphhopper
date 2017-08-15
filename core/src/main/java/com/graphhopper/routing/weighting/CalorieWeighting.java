@@ -126,37 +126,11 @@ public class CalorieWeighting extends AbstractWeighting {
         double exactTime = calcExactTimeInSeconds(edge, reverse);
         double kcal = MR * exactTime / 4184;
         return kcal;
-        if (Double.isNaN(kcal)) {
-            throw new IllegalArgumentException("calcKcal should not return NaN");
-        } else {
-            return kcal;
-        }
     }
 
     @Override
     public double calcWeight(EdgeIteratorState edge, boolean reverse, int prevOrNextEdgeId) {
-        double speed = reverse ? flagEncoder.getReverseSpeed(edge.getFlags()) : flagEncoder.getSpeed(edge.getFlags());
-        if (speed == 0)
-            return Double.POSITIVE_INFINITY;
-
-        double time = edge.getDistance() / speed * SPEED_CONV;
-
-        // add direction penalties at start/stop/via points
-        boolean unfavoredEdge = edge.getBool(EdgeIteratorState.K_UNFAVORED_EDGE, false);
-        if (unfavoredEdge)
-            time += headingPenalty;
-
-        return time;
-    }
-
-    @Override
-    public long calcMillis(EdgeIteratorState edgeState, boolean reverse, int prevOrNextEdgeId) {
-        long time = 0;
-        boolean unfavoredEdge = edgeState.getBool(EdgeIteratorState.K_UNFAVORED_EDGE, false);
-        if (unfavoredEdge)
-            time += headingPenaltyMillis;
-
-        return time + super.calcMillis(edgeState, reverse, prevOrNextEdgeId);
+        return calcKcal(edge, reverse);
     }
 
     @Override
