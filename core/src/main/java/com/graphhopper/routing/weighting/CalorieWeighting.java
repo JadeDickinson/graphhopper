@@ -98,7 +98,10 @@ public class CalorieWeighting extends AbstractWeighting {
         double M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (terrain * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
         double MR = M - C;
 
+        double SMR = calcSMR();
+    public double calcSMR() {
         double height = 165;
+        double weight = 80;
         boolean female = true;
         double age = 25;
         double BMR;
