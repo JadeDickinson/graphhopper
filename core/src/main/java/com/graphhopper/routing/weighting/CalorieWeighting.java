@@ -99,6 +99,13 @@ public class CalorieWeighting extends AbstractWeighting {
         double MR = M - C;
 
         double SMR = calcSMR();
+        if (SMR > MR) {
+            return SMR;
+        } else {
+            return MR;
+        }
+    }
+
     public double calcSMR() {
         double height = 165;
         double weight = 80;
@@ -111,11 +118,7 @@ public class CalorieWeighting extends AbstractWeighting {
             BMR = 66 + (13.7 * weight) + (5 * height) - (6.8 * age);
         }
         double SMR = 1.2 * BMR;
-        if (SMR > MR) {
-            return SMR;
-        } else {
-            return MR;
-        }
+        return SMR;
     }
 
     public double calcC(double weight, double load, double percentGrade, double velocity) {
