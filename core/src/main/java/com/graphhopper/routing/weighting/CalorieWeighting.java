@@ -72,15 +72,9 @@ public class CalorieWeighting extends AbstractWeighting {
         else return percentGrade;
     }
 
-    public double calcWalkingVelocity(EdgeIteratorState edge, boolean reverse) {
-        double percentGrade = calcPercentGrade(edge, reverse);
-        double velocity = ((6*Math.exp(-3.5 * ((percentGrade*0.01) + 0.05)) * 1000) / 60 / 60);
-        return velocity;
-    }
-
     public double calcExactTimeInSeconds(EdgeIteratorState edge, boolean reverse) {
         double distance = calcDistance(edge);
-        double velocity = calcWalkingVelocity(edge, reverse);
+        double velocity = 1.34112;
         double exactTime = distance / velocity;
         return exactTime;
     }
@@ -91,7 +85,7 @@ public class CalorieWeighting extends AbstractWeighting {
         double terrain = 1.0;
         double C = 0;
         double percentGrade = calcPercentGrade(edge, reverse);
-        double velocity = calcWalkingVelocity(edge, reverse);
+        double velocity = 1.34112;
         if (percentGrade < 0) {
             C = calcC(weight, load, percentGrade, velocity);
         }
