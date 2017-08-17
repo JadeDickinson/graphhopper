@@ -26,8 +26,6 @@ public class CalorieWeightingTest {
         assertEquals(-1.0, elevationChange, 0);
 
 ////        new VirtualEdgeIteratorState(originalTraversalKey, edgeID, baseNode, adjNode, distance, flag, name, pointList)
-        double expectedSpeed = instance.calcWalkingVelocity(virtualEdge, false);
-        assertEquals(expectedSpeed, 1.399165014411531, 0);
 
         //        double speed = reverse ? flagEncoder.getReverseSpeed(edge.getFlags()) : flagEncoder.getSpeed(edge.getFlags());
 
@@ -38,10 +36,9 @@ public class CalorieWeightingTest {
 //        System.out.println("Actual speed " + actualSpeed);
 
         double expectedDistance = instance.calcDistance(virtualEdge);// virtualEdge.getDistance();
-        System.out.println("expectedSpeed " + expectedSpeed);
         assertEquals(expectedDistance, 69976.69830000501, 0);
 
-        double expectedTime = expectedDistance / expectedSpeed;
+        double expectedTime = expectedDistance / 1.34112;
         double actualTime = instance.calcExactTimeInSeconds(virtualEdge, false);
         System.out.println("Actual time " + actualTime);
         assertEquals(expectedTime, actualTime, 0);
