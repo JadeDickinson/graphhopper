@@ -93,12 +93,19 @@ public class CalorieWeighting extends AbstractWeighting {
         double MR = M - C;
 
         double SMR = calcSMR();
-
-        if ((SMR > (MR + 800))) {
+        if ((SMR > (MR + constantCalc(weight)))) {
             return SMR;
         } else {
             return MR;
         }
+    }
+
+    public double constantCalc(double weight) {
+        double maximumWeight = 400;
+        double amountToMultiply = maximumWeight - weight;
+        double base = 23;
+        double constant = (amountToMultiply * 2.4) + base;
+        return constant;
     }
 
     public double calcBMR() {
