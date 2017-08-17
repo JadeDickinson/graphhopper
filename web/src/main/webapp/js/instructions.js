@@ -184,7 +184,7 @@ function calculateKcal(distance, changeInElevation) {
         if (percentGrade <= -8) {
             percentGrade = -8;
         }
-        var velocity = ((6*Math.exp(-3.5 * ((percentGrade / 100) + 0.05))) * 1000) / 60 / 60;
+        var velocity = 1.34112;//((6*Math.exp(-3.5 * ((percentGrade / 100) + 0.05))) * 1000) / 60 / 60;
         var exactTimeInSeconds = calculateExactTimeInSeconds(distance, velocity);
 
         var C = 0;
@@ -195,26 +195,8 @@ function calculateKcal(distance, changeInElevation) {
         if (C > 0) {
             M = M - C;
         }
-        var height = 165;
-        var female = true;
-        var age = 25;
-        var BMR = 0;
-        if (female) {
-            BMR = 655 + (9.6 * weight) + (1.7 * height) - (4.7 * age);
-        } else {
-            BMR = 66 + (13.7 * weight) + (5 * height) - (6.8 * age);
-        }
-        var SMR = 1.2 * BMR;
-        var avoidUnderPrediction = SMR - BMR;
-        if (avoidUnderPrediction > M) {
-            console.log("M is " + M);
-            console.log("avoid is " + avoidUnderPrediction);
-        }
-        if (avoidUnderPrediction > M) {
-            var kcal = (avoidUnderPrediction * exactTimeInSeconds) / 4184;
-        } else {
-            var kcal = (M * exactTimeInSeconds) / 4184;
-        }
+
+        var kcal = (M * exactTimeInSeconds) / 4184;
         if (kcal < 0) {
             kcalAndSeconds.push(0);
         } else {
