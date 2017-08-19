@@ -487,7 +487,6 @@ function routeLatLng(request, doQuery) {
         // 2. important workaround for encoding problems in history.js
         var params = urlTools.parseUrl(urlForHistory);
         console.log(params);
-        console.log("Weighting: " + params.weighting);
         params.do_zoom = doZoom;
         // force a new request even if we have the same parameters
         params.mathRandom = Math.random();
