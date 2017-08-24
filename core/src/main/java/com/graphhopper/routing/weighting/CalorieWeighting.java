@@ -80,9 +80,7 @@ public class CalorieWeighting extends AbstractWeighting {
     }
 
     public double calcMR(EdgeIteratorState edge, boolean reverse) {
-        double weight = 80;
-        double load = 0;
-        double terrain = 1.0;
+//        double weight = 65;
         double C = 0;
         double percentGrade = calcPercentGrade(edge, reverse);
         double velocity = 1.34112;
@@ -93,26 +91,37 @@ public class CalorieWeighting extends AbstractWeighting {
         double MR = M - C;
 
         double SMR = calcSMR();
-        if ((SMR > (MR + constantCalc(weight)))) {
+        if (SMR > MR + constantCalc(SMR)) {
             return SMR;
         } else {
             return MR;
         }
     }
 
-    public double constantCalc(double weight) {
-        double maximumWeight = 400;
-        double amountToMultiply = maximumWeight - weight;
-        double base = 23;
-        double constant = (amountToMultiply * 2.4) + base;
-        return constant;
+    //Add getter and setter methods
+
+    public final double weight = 90;
+    public final double load = 0;
+    //Change load in Javascript too.
+    public final double terrain = 1.0;
+    public double height = 151;
+    public boolean female = false;
+    public double age = 18;
+
+    public double constantCalc(double SMR) {
+        double correction_percentage;
+        if (female && load == 0 && height == 151 && age == 18) {
+            correction_percentage = -0.278* Math.log(weight) + 1.6773;
+        } else if (load == 0 && height == 151 && age == 18) {
+            correction_percentage = -0.183*Math.log(125) + 1.3233;
+        } else {
+            throw new IllegalArgumentException("I can't handle this yet");
+        }
+        double correction = SMR * correction_percentage;
+        return correction;
     }
 
     public double calcBMR() {
-        double height = 165;
-        double weight = 80;
-        boolean female = true;
-        double age = 25;
         double BMR;
         if (female) {
             BMR = 655 + (9.6 * weight) + (1.7 * height) - (4.7 * age);
