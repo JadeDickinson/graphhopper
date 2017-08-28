@@ -3,9 +3,9 @@
 GraphHopper is a fast and memory efficient Java routing engine released under Apache License 2.0.
 Per default it uses OpenStreetMap and GTFS data but can import other data sources.
 
-# Community
+# Generating least calorically demanding routes
 
-We have a prosper community and welcome everyone. Let us know your problems, use cases or just [say hello](https://discuss.graphhopper.com/). Please see our [community guidelines](https://graphhopper.com/agreements/cccoc.html).
+This project aims to provide users with the least calorically demanding routes between points, using elevation data together with details of the user to weight the graph according to caloric cost between points and then using A* to generate routes. To use the custom weighting, set the weighting to 'calorie' in the URL.
 
 ## Get Started
 
@@ -19,11 +19,6 @@ To get started read through our documentation and install the GraphHopper Web Se
 ## Questions
 
 All questions can go to our [forum](https://discuss.graphhopper.com/) where we also have subsections specicially for developers, mobiles usage (iOS&Android) and [our map matching component](https://github.com/graphhopper/map-matching). Another place to ask questions would be on [Stackoverflow](http://stackoverflow.com/questions/tagged/graphhopper) but please do **not** use our issue section. Create new issues only if you are sure that this is a bug and see how to contribute in the next section.
-
-## Contribute
-
-Read through [how to contribute](.github/CONTRIBUTING.md)
-like finding and fixing bugs and improving our documentation or translations!
 
 ## For the Web
 
@@ -39,7 +34,7 @@ where the default is [Omniscale](http://omniscale.com/), and all is available fo
 
 ## For Mobile Apps
 
-There are subprojects to make GraphHopper working offline
+There are subprojects to make GraphHopper work offline
 on [Android](https://github.com/graphhopper/graphhopper/tree/master/android)
 and [iOS](http://github.com/graphhopper/graphhopper-ios)
 
