@@ -31,7 +31,7 @@ public class BeelineWeightApproximator implements WeightApproximator {
     private final NodeAccess nodeAccess;
     private final Weighting weighting;
     private DistanceCalc distanceCalc = Helper.DIST_EARTH;
-    private double toLat, toLon;
+    private double toLat, toLon, toEle;
     private double epsilon = 1;
 
     public BeelineWeightApproximator(NodeAccess nodeAccess, Weighting weighting) {
@@ -43,6 +43,7 @@ public class BeelineWeightApproximator implements WeightApproximator {
     public void setTo(int toNode) {
         toLat = nodeAccess.getLatitude(toNode);
         toLon = nodeAccess.getLongitude(toNode);
+        toEle = nodeAccess.getElevation(toNode);
     }
 
     public WeightApproximator setEpsilon(double epsilon) {
@@ -60,8 +61,50 @@ public class BeelineWeightApproximator implements WeightApproximator {
         double fromLat = nodeAccess.getLatitude(fromNode);
         double fromLon = nodeAccess.getLongitude(fromNode);
         double dist2goal = distanceCalc.calcDist(toLat, toLon, fromLat, fromLon);
-        double weight2goal = weighting.getMinWeight(dist2goal);
-        return weight2goal * epsilon;
+        if (weighting.getClass().toString().contains("CalorieWeighting")) {
+            CalorieWeighting calWeighting = (CalorieWeighting)weighting;
+            double fromEle = nodeAccess.getElevation(fromNode);
+            double percentGrade = (toEle - fromEle) / dist2goal * 100;
+            if (dist2goal == 0) {
+                percentGrade = 0;
+            }
+            if (percentGrade < -8.0) percentGrade = -8.0;
+            double velocity = ((6*Math.exp(-3.5 * ((percentGrade*0.01) + 0.05)) * 1000) / 60 / 60);
+
+            double estimatedTime2goal = dist2goal / velocity;
+
+            double C = 0;
+            if (percentGrade < 0) {
+                C = calWeighting.calcC(calWeighting.weight, calWeighting.load, percentGrade, velocity);
+            }
+            double M = (((1.5 * calWeighting.weight) + ((2 * (calWeighting.weight + calWeighting.load))) *  ((calWeighting.load / calWeighting.weight) * (calWeighting.load / calWeighting.weight)))) + (calWeighting.terrain * (calWeighting.weight + calWeighting.load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
+            double MR = M - C;
+
+            double BMR;
+            if (calWeighting.female) {
+                BMR = 655 + (9.6 * calWeighting.weight) + (1.7 * calWeighting.height) - (4.7 * calWeighting.age);
+            } else {
+                BMR = 66 + (13.7 * calWeighting.weight) + (5 * calWeighting.height) - (6.8 * calWeighting.age);
+            }
+            double SMR = 1.2 * BMR;
+            double difference = SMR - BMR;
+            double kcal;
+            if (SMR > MR) {
+                kcal = SMR * estimatedTime2goal / 4184;
+            } else {
+                kcal = MR * estimatedTime2goal / 4184;
+            }
+            if(kcal < 0) {
+                throw new IllegalArgumentException("Calories for edge should not be negative");
+            }
+            if (Double.isNaN(dist2goal)) {
+                throw new IllegalArgumentException("Dist to goal should not be NaN");
+            }
+            return kcal;
+        } else {
+            double weight2goal = weighting.getMinWeight(dist2goal);
+            return weight2goal * epsilon;
+        }
     }
 
     public BeelineWeightApproximator setDistanceCalc(DistanceCalc distanceCalc) {
