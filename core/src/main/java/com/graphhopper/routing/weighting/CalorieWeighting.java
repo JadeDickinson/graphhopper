@@ -117,21 +117,25 @@ public class CalorieWeighting extends AbstractWeighting {
             correction_percentage = -0.183 * Math.log(weight) + 1.3233;
         }
         if (height != 151) {
-            double height_constant;
-            if (female) {
-                height_constant = 0.000546551724137932;
-            } else {
-                height_constant = 0.00121509433962264;
-            }
-            if (height > 151) {
-                correction_percentage = correction_percentage + ( height_constant * (height - 151)  );
-            } else {
-                correction_percentage = correction_percentage - ( height_constant * (151 - height)  );
-            }
+            correction_percentage = correctForHeight(correction_percentage, height);
         }
-
         double correction = SMR * correction_percentage;
         return correction;
+    }
+
+    public double correctForHeight(double correction_percentage, double height) {
+        double height_constant;
+        if (female) {
+            height_constant = 0.000546551724137932;
+        } else {
+            height_constant = 0.00121509433962264;
+        }
+        if (height > 151) {
+            correction_percentage = correction_percentage + ( height_constant * (height - 151)  );
+        } else {
+            correction_percentage = correction_percentage - ( height_constant * (151 - height)  );
+        }
+        return correction_percentage;
     }
 
     public double calcBMR() {
