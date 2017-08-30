@@ -145,6 +145,16 @@ public class CalorieWeighting extends AbstractWeighting {
         return correction_percentage;
     }
 
+    public double correctForLoad(double correction_percentage, double load) {
+        if (load > 51) {
+            throw new IllegalArgumentException("Load is too heavy to be carried");
+        }
+        double load_constant;
+        if (female) load_constant = 0.00764607843137255;
+        else load_constant = 0.00698137254901961;
+        correction_percentage = correction_percentage - (load_constant * load);
+        return correction_percentage;
+    }
     public double calcBMR() {
         double BMR;
         if (female) {
