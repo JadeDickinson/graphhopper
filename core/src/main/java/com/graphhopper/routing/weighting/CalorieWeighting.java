@@ -110,13 +110,14 @@ public class CalorieWeighting extends AbstractWeighting {
 
     public double constantCalc(double SMR) {
         double correction_percentage;
-        if (female && load == 0 && height == 151 && age == 18) {
+        if (female) {
+//          //  load == 0 && height == 151 && age == 18
             correction_percentage = -0.278* Math.log(weight) + 1.6773;
-        } else if (load == 0 && height == 151 && age == 18) {
-            correction_percentage = -0.183*Math.log(125) + 1.3233;
+//            throw new IllegalArgumentException("Correct" + correction_percentage);
         } else {
-            throw new IllegalArgumentException("I can't handle this yet");
+            correction_percentage = -0.183 * Math.log(weight) + 1.3233;
         }
+
         double correction = SMR * correction_percentage;
         return correction;
     }
