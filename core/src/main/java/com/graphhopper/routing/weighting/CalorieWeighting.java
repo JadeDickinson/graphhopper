@@ -125,11 +125,8 @@ public class CalorieWeighting extends AbstractWeighting {
 
     public double correctForHeight(double correction_percentage, double height) {
         double height_constant;
-        if (female) {
-            height_constant = 0.000546551724137932;
-        } else {
-            height_constant = 0.00121509433962264;
-        }
+        if (female) height_constant = 0.000546551724137932;
+        else height_constant = 0.00121509433962264;
         if (height > 151) {
             correction_percentage = correction_percentage + ( height_constant * (height - 151)  );
         } else {
