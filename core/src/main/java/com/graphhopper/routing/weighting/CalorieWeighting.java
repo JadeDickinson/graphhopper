@@ -111,7 +111,6 @@ public class CalorieWeighting extends AbstractWeighting {
     public double constantCalc(double SMR) {
         double correction_percentage;
         if (female) {
-//          //  load == 0 && height == 151 && age == 18
             correction_percentage = -0.278* Math.log(weight) + 1.6773;
         } else {
             correction_percentage = -0.183 * Math.log(weight) + 1.3233;
@@ -122,11 +121,8 @@ public class CalorieWeighting extends AbstractWeighting {
         if (load != 0) {
             correction_percentage = correctForLoad(correction_percentage, load);
         }
-        double age_constant;
-        if (female) age_constant = 0.00196829268292683;
-        else age_constant = 0.00233536585365854;
         if (age != 18) {
-            correction_percentage = correction_percentage - (age_constant * (age - 18));
+            correction_percentage = correctForAge(correction_percentage, age);
         }
         double correction = SMR * correction_percentage;
         return correction;
