@@ -120,15 +120,14 @@ public class CalorieWeighting extends AbstractWeighting {
             correction_percentage = correctForHeight(correction_percentage, height);
         }
         if (load != 0) {
-            if (load > 51) {
-                throw new IllegalArgumentException("Load is too heavy to be carried");
-            }
-            double load_constant;
-            if (female) load_constant = 0.00764607843137255;
-            else load_constant = 0.00698137254901961;
-            correction_percentage = correction_percentage - (load_constant * load);
+            correction_percentage = correctForLoad(correction_percentage, load);
         }
-
+        double age_constant;
+        if (female) age_constant = 0.00196829268292683;
+        else age_constant = 0.00233536585365854;
+        if (age != 18) {
+            correction_percentage = correction_percentage - (age_constant * (age - 18));
+        }
         double correction = SMR * correction_percentage;
         return correction;
     }
