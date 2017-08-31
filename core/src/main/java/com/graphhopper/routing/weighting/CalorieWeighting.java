@@ -154,6 +154,15 @@ public class CalorieWeighting extends AbstractWeighting {
         correction_percentage = correction_percentage - (load_constant * load);
         return correction_percentage;
     }
+
+    public double correctForAge(double correction_percentage, double age) {
+        double age_constant;
+        if (female) age_constant = 0.00196829268292683;
+        else age_constant = 0.00233536585365854;
+        correction_percentage = correction_percentage - (age_constant * (age - 18));
+        return correction_percentage;
+    }
+
     public double calcBMR() {
         double BMR;
         if (female) {
