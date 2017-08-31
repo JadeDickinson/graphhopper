@@ -72,6 +72,8 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     var debugInstructions = request.api_params.debug_instructions;
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
+    var weight = 67;
+    var load = 0;
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
@@ -80,7 +82,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
             var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
             var changeInElevation = parseInt(nextElevation - lngLat[2]);
         }
-        var kcalAndTime = calculateKcal(instr.distance, changeInElevation);
+        var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load);
         instr.time = kcalAndTime.pop() * 1000;
         var kcal = kcalAndTime.pop();
         if (totalCals == undefined) {
@@ -105,7 +107,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
                     var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
                     var changeInElevation = parseInt(nextElevation - lngLat[2]);
                 }
-                var kcalAndTime = calculateKcal(instr.distance, changeInElevation);
+                var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load);
                 instr.time = kcalAndTime.pop() * 1000;
                 var kcal = kcalAndTime.pop();
                 if (totalCals == undefined) {
@@ -170,9 +172,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     return infoDiv;
 };
 
-function calculateKcal(distance, changeInElevation) {
-    var weight = 80;
-    var load = 0;
+function calculateKcal(distance, changeInElevation, weight, load) {
     var terrain = 1.0;
     var kcalAndSeconds = new Array;
     if (distance == 0) {
