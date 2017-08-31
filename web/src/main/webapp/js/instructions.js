@@ -184,7 +184,7 @@ function calculateKcal(distance, changeInElevation, weight, load) {
         if (percentGrade <= -8) {
             percentGrade = -8;
         }
-        var velocity = 1.34112;//((6*Math.exp(-3.5 * ((percentGrade / 100) + 0.05))) * 1000) / 60 / 60;
+        var velocity = 1.34112;
         var exactTimeInSeconds = calculateExactTimeInSeconds(distance, velocity);
 
         var C = 0;
