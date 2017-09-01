@@ -73,7 +73,13 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
     var weight = parseFloat(prompt("Please enter your weight in kilos"));
+    while (weight < 0 || isNaN(weight)) {
+        weight = parseFloat(prompt("Please enter a positive weight in kilos"));
+    }
     var load = parseFloat(prompt("Please enter your load carried in kilos"));
+    while (load < 0 || isNaN(load)) {
+        load = parseFloat(prompt("Please enter 0 or a positive load in kilos"));
+    }
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
