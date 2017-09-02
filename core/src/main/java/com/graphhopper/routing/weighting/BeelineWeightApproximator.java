@@ -87,7 +87,6 @@ public class BeelineWeightApproximator implements WeightApproximator {
                 BMR = 66 + (13.7 * calWeighting.weight) + (5 * calWeighting.height) - (6.8 * calWeighting.age);
             }
             double SMR = 1.2 * BMR;
-            double difference = SMR - BMR;
             double kcal;
             if (SMR > MR) {
                 kcal = SMR * estimatedTime2goal / 4184;
