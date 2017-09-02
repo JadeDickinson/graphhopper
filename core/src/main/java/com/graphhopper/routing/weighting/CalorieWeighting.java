@@ -80,7 +80,6 @@ public class CalorieWeighting extends AbstractWeighting {
     }
 
     public double calcMR(EdgeIteratorState edge, boolean reverse) {
-//        double weight = 65;
         double C = 0;
         double percentGrade = calcPercentGrade(edge, reverse);
         double velocity = 1.34112;
@@ -183,6 +182,9 @@ public class CalorieWeighting extends AbstractWeighting {
         double MR = calcMR(edge, reverse);
         double exactTime = calcExactTimeInSeconds(edge, reverse);
         double kcal = MR * exactTime / 4184;
+        if (kcal < 0) {
+            throw new IllegalArgumentException("Calories should never be negative");
+        }
         return kcal;
     }
 
