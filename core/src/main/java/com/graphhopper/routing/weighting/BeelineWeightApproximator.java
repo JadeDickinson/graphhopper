@@ -65,18 +65,13 @@ public class BeelineWeightApproximator implements WeightApproximator {
             CalorieWeighting calWeighting = (CalorieWeighting)weighting;
             double fromEle = nodeAccess.getElevation(fromNode);
             double percentGrade = (toEle - fromEle) / dist2goal * 100;
-            if (dist2goal == 0) {
-                percentGrade = 0;
-            }
+            if (dist2goal == 0) percentGrade = 0;
             if (percentGrade < -8.0) percentGrade = -8.0;
             double velocity = ((6*Math.exp(-3.5 * ((percentGrade*0.01) + 0.05)) * 1000) / 60 / 60);
-
             double estimatedTime2goal = dist2goal / velocity;
-
             double C = 0;
-            if (percentGrade < 0) {
+            if (percentGrade < 0)
                 C = calWeighting.calcC(calWeighting.weight, calWeighting.load, percentGrade, velocity);
-            }
             double M = (((1.5 * calWeighting.weight) + ((2 * (calWeighting.weight + calWeighting.load))) *  ((calWeighting.load / calWeighting.weight) * (calWeighting.load / calWeighting.weight)))) + (calWeighting.terrain * (calWeighting.weight + calWeighting.load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
             double MR = M - C;
 
@@ -88,17 +83,10 @@ public class BeelineWeightApproximator implements WeightApproximator {
             }
             double SMR = 1.2 * BMR;
             double kcal;
-            if (SMR > MR) {
-                kcal = SMR * estimatedTime2goal / 4184;
-            } else {
-                kcal = MR * estimatedTime2goal / 4184;
-            }
-            if(kcal < 0) {
-                throw new IllegalArgumentException("Calories for edge should not be negative");
-            }
-            if (Double.isNaN(dist2goal)) {
-                throw new IllegalArgumentException("Dist to goal should not be NaN");
-            }
+            if (SMR > MR) kcal = SMR * estimatedTime2goal / 4184;
+            else kcal = MR * estimatedTime2goal / 4184;
+            if(kcal < 0) throw new IllegalArgumentException("Calories for edge should not be negative");
+            if (Double.isNaN(dist2goal)) throw new IllegalArgumentException("Dist to goal should not be NaN");
             return kcal;
         } else {
             double weight2goal = weighting.getMinWeight(dist2goal);
