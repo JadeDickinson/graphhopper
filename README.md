@@ -3,7 +3,7 @@
 GraphHopper is a fast and memory efficient Java routing engine released under Apache License 2.0.
 Per default it uses OpenStreetMap and GTFS data but can import other data sources.
 
-# Generating least calorically demanding routes
+# Generating least calorically costly routes
 
 This project aims to provide users with the least calorically demanding routes between points, using elevation data together with details of the user to weight the graph according to caloric cost between points and then using A* to generate routes. To use the custom weighting, set the weighting to 'calorie' in the URL.
 
