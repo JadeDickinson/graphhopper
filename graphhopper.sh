@@ -245,7 +245,7 @@ if [ "$ACTION" = "ui" ] || [ "$ACTION" = "web" ]; then
   else
     exec "$JAVA" $JAVA_OPTS -jar "$WEB_JAR" jetty.resourcebase=$RC_BASE \
     	jetty.port=$JETTY_PORT jetty.host=$JETTY_HOST \
-    	config=$CONFIG $GH_WEB_OPTS graph.location="$GRAPH" datareader.file="$OSM_FILE" <&- &
+    	config=$CONFIG $GH_WEB_OPTS graph.location="$GRAPH" datareader.file="$OSM_FILE" user.weight = "$3" user.load = "$4" user.height = "$5" user.is_female = "$6" user.age = "$7" <&- &
     if [ "$GH_PID_FILE" != "" ]; then
        echo $! > $GH_PID_FILE
     fi
@@ -254,7 +254,7 @@ if [ "$ACTION" = "ui" ] || [ "$ACTION" = "web" ]; then
 
 elif [ "$ACTION" = "import" ]; then
  "$JAVA" $JAVA_OPTS -cp "$JAR" $GH_CLASS config=$CONFIG \
-      $GH_IMPORT_OPTS graph.location="$GRAPH" datareader.file="$OSM_FILE"
+      $GH_IMPORT_OPTS graph.location="$GRAPH" datareader.file="$OSM_FILE" user.weight = "$3" user.load = "$4" user.height = "$5" user.is_female = "$6" user.age = "$7"
 
 
 elif [ "$ACTION" = "torture" ]; then
@@ -265,11 +265,11 @@ elif [ "$ACTION" = "miniui" ]; then
  execMvn --projects tools -am -DskipTests clean package
  JAR=tools/target/graphhopper-tools-$VERSION-jar-with-dependencies.jar   
  "$JAVA" $JAVA_OPTS -cp "$JAR" com.graphhopper.ui.MiniGraphUI datareader.file="$OSM_FILE" config=$CONFIG \
-              graph.location="$GRAPH"
+              graph.location="$GRAPH" user.weight = "$3" user.load = "$4" user.height = "$5" user.is_female = "$6" user.age = "$7"
 
 
 elif [ "$ACTION" = "measurement" ]; then
- ARGS="config=$CONFIG graph.location=$GRAPH datareader.file=$OSM_FILE prepare.ch.weightings=fastest prepare.lm.weightings=fastest graph.flag_encoders=car prepare.min_network_size=10000 prepare.min_oneway_network_size=10000"
+ ARGS="config=$CONFIG graph.location=$GRAPH datareader.file=$OSM_FILE prepare.ch.weightings=fastest prepare.lm.weightings=fastest graph.flag_encoders=car prepare.min_network_size=10000 prepare.min_oneway_network_size=10000  user.weight = $3 user.load = $4 user.height = $5 user.is_female = $6 user.age = $7"
  # echo -e "\ncreate graph via $ARGS, $JAR"
  # START=$(date +%s)
  # avoid islands for measurement at all costs
