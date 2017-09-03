@@ -4,17 +4,21 @@ import com.graphhopper.routing.VirtualEdgeIteratorState;
 import com.graphhopper.routing.util.EncodingManager;
 import com.graphhopper.routing.util.FlagEncoder;
 import com.graphhopper.util.*;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class CalorieWeightingTest {
     private final FlagEncoder encoder = new EncodingManager("foot").getEncoder("foot");
+    CmdArgs args = new CmdArgs();
 
-    @Test
-    public void testEncoderIsFoot() {
-        Weighting instance = new CalorieWeighting(encoder);
-        assertEquals(instance.toString(), "calorie|foot");
+    @Before public void initialize() {
+        args.put("weight", "65");
+        args.put("load", "0");
+        args.put("height", "165");
+        args.put("female", "true");
+        args.put("age", "18");
     }
 
     @Test
@@ -26,6 +30,11 @@ public class CalorieWeightingTest {
         assertEquals(-1.0, elevationChange, 0);
         double expectedDistance = instance.calcDistance(virtualEdge);// virtualEdge.getDistance();
         assertEquals(expectedDistance, 69976.69830000501, 0);
+//    @Test
+//    public void testEncoderIsFoot() {
+//        Weighting instance = new CalorieWeighting(encoder);
+//        assertEquals(instance.toString(), "calorie|foot");
+//    }
 
         double expectedTime = expectedDistance / 1.34112;
         double actualTime = instance.calcExactTimeInSeconds(virtualEdge, false);
