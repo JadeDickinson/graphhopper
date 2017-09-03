@@ -71,15 +71,15 @@ public class BeelineWeightApproximator implements WeightApproximator {
             double estimatedTime2goal = dist2goal / velocity;
             double C = 0;
             if (percentGrade < 0)
-                C = calWeighting.calcC(calWeighting.weight, calWeighting.load, percentGrade, velocity);
-            double M = (((1.5 * calWeighting.weight) + ((2 * (calWeighting.weight + calWeighting.load))) *  ((calWeighting.load / calWeighting.weight) * (calWeighting.load / calWeighting.weight)))) + (calWeighting.terrain * (calWeighting.weight + calWeighting.load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
+                C = calWeighting.calcC(calWeighting.getWeight(), calWeighting.getLoad(), percentGrade, velocity);
+            double M = (((1.5 * calWeighting.getWeight()) + ((2 * (calWeighting.getWeight() + calWeighting.getLoad()))) *  ((calWeighting.getLoad() / calWeighting.getWeight()) * (calWeighting.getLoad() / calWeighting.getWeight())))) + (calWeighting.getTerrain() * (calWeighting.getWeight() + calWeighting.getLoad())) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
             double MR = M - C;
 
             double BMR;
-            if (calWeighting.female) {
-                BMR = 655 + (9.6 * calWeighting.weight) + (1.7 * calWeighting.height) - (4.7 * calWeighting.age);
+            if (calWeighting.getFemale()) {
+                BMR = 655 + (9.6 * calWeighting.getWeight()) + (1.7 * calWeighting.getHeight()) - (4.7 * calWeighting.getAge());
             } else {
-                BMR = 66 + (13.7 * calWeighting.weight) + (5 * calWeighting.height) - (6.8 * calWeighting.age);
+                BMR = 66 + (13.7 * calWeighting.getWeight()) + (5 * calWeighting.getHeight()) - (6.8 * calWeighting.getAge());
             }
             double SMR = 1.2 * BMR;
             double kcal;
