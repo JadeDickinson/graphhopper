@@ -11,7 +11,7 @@ To startup the server using your details, use the following startup command in t
 
 ./graphhopper.sh web greater-london-latest.osm.pbf weight=65 load=0 height=165 female=true age=18
 
-N.B. Heights are in cm and weight and load are in kilograms.
+N.B. Heights should be in cm and weight and load should be in kilograms.
 
 ## Get Started
 
