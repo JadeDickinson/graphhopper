@@ -17,6 +17,7 @@ public class CalorieWeighting extends AbstractWeighting {
     private final double height = 175;
     private final boolean female = false;
     private final double age = 61;
+    private final double TERRAIN = 1.0;
 
     public double getWeight() {
         return this.weight;
@@ -27,7 +28,7 @@ public class CalorieWeighting extends AbstractWeighting {
     }
 
     public double getTerrain() {
-        return this.terrain;
+        return this.TERRAIN;
     }
 
     public double getHeight() {
@@ -113,7 +114,7 @@ public class CalorieWeighting extends AbstractWeighting {
         if (percentGrade < 0) {
             C = calcC(weight, load, percentGrade, velocity);
         }
-        double M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (terrain * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
+        double M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (TERRAIN * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
         double MR = M - C;
 
         double SMR = calcSMR();
