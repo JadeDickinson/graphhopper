@@ -114,7 +114,7 @@ public class GraphHopper implements GraphHopperAPI {
     private FlagEncoderFactory flagEncoderFactory = FlagEncoderFactory.DEFAULT;
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-    public CmdArgs userDetails;
+    private CmdArgs userDetails;
 
     public GraphHopper() {
         chFactoryDecorator.setEnabled(true);
