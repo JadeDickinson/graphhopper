@@ -4,9 +4,6 @@ import com.graphhopper.routing.util.FlagEncoder;
 import com.graphhopper.routing.util.HintsMap;
 import com.graphhopper.util.*;
 import com.graphhopper.util.Parameters.Routing;
-import com.graphhopper.util.shapes.GHPoint3D;
-
-import java.util.Iterator;
 
 public class CalorieWeighting extends AbstractWeighting {
     protected final static double SPEED_CONV = 3.6;
