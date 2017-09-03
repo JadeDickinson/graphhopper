@@ -114,6 +114,8 @@ public class GraphHopper implements GraphHopperAPI {
     private FlagEncoderFactory flagEncoderFactory = FlagEncoderFactory.DEFAULT;
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
+    public CmdArgs userDetails;
+
     public GraphHopper() {
         chFactoryDecorator.setEnabled(true);
         lmFactoryDecorator.setEnabled(false);
@@ -507,6 +509,7 @@ public class GraphHopper implements GraphHopperAPI {
      */
     public GraphHopper init(CmdArgs args) {
         args = CmdArgs.readFromConfigAndMerge(args, "config", "graphhopper.config");
+        userDetails = args;
         if (args.has("osmreader.osm"))
             throw new IllegalArgumentException("Instead osmreader.osm use datareader.file, for other changes see core/files/changelog.txt");
 
