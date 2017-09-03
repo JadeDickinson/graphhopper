@@ -99,7 +99,6 @@ public class CmdArgs extends PMap {
                         "add to the CmdArgs-object as the key already exists with '" + old + "'");
         }
 
-//        By putting a key and equals sign in the arguments, we get the user details included in the map.
         return new CmdArgs(map);
     }
 
