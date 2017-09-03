@@ -905,7 +905,7 @@ public class GraphHopper implements GraphHopperAPI {
         } else if ("short_fastest".equalsIgnoreCase(weightingStr)) {
             weighting = new ShortFastestWeighting(encoder, hintsMap);
         } else if ("calorie".equalsIgnoreCase(weightingStr)) {
-            weighting = new CalorieWeighting(encoder, hintsMap);
+            weighting = new CalorieWeighting(encoder, hintsMap, userDetails);
         }
         if (weighting == null)
             throw new IllegalArgumentException("weighting " + weighting + " not supported");

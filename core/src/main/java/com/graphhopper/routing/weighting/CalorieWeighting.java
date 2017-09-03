@@ -17,6 +17,7 @@ public class CalorieWeighting extends AbstractWeighting {
     private final double height = 175;
     private final boolean female = false;
     private final double age = 61;
+    private CmdArgs args;
     private final double TERRAIN = 1.0;
 
     public double getWeight() {
@@ -43,15 +44,16 @@ public class CalorieWeighting extends AbstractWeighting {
         return this.age;
     }
 
-    public CalorieWeighting(FlagEncoder encoder, PMap map) {
+    public CalorieWeighting(FlagEncoder encoder, PMap map, CmdArgs args) {
         super(encoder);
+        this.args = args;
         headingPenalty = map.getDouble(Routing.HEADING_PENALTY, Routing.DEFAULT_HEADING_PENALTY);
         headingPenaltyMillis = Math.round(headingPenalty * 1000);
         maxSpeed = encoder.getMaxSpeed() / SPEED_CONV;
     }
 
     public CalorieWeighting(FlagEncoder encoder) {
-        this(encoder, new HintsMap(0));
+        this(encoder, new HintsMap(0), new CmdArgs(null));
     }
 
     @Override
