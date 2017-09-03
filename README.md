@@ -5,7 +5,7 @@ Per default it uses OpenStreetMap and GTFS data but can import other data source
 
 # Generating least calorically costly routes
 
-This project aims to provide users with the least calorically demanding routes between points, using elevation data together with details of the user to weight the graph according to caloric cost between points and then using A* to generate routes. To use the custom weighting, set the weighting to 'calorie' in the URL.
+This project aims to provide users with the least calorically costly routes between points, using elevation data together with details of the user to weight the graph according to caloric cost between points and then using A* to generate routes. To use the custom weighting, set the weighting to 'calorie' in the URL.
 
 To startup the server using your own details, use the following startup command in the command line, replacing the details below with your own:
 
