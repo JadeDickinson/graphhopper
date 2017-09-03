@@ -76,7 +76,7 @@ public class CalorieWeightingTest {
         VirtualEdgeIteratorState virtualEdge = new VirtualEdgeIteratorState(0, 1, 1, 2, 20,
                 encoder.setProperties(10, true, true), "test", Helper.createPointList3D(51.518224,-0.155107, 10, 51.518117,-0.155702, 4));
         double percentGrade = instance.calcPercentGrade(virtualEdge, false);
-        assertEquals(-10.0, percentGrade, 0);
+        assertEquals(-8.0, percentGrade, 0);
     }
 
     @Test
@@ -84,9 +84,9 @@ public class CalorieWeightingTest {
         CalorieWeighting instance = new CalorieWeighting(encoder, new PMap());
         VirtualEdgeIteratorState virtualEdge = new VirtualEdgeIteratorState(0, 1, 1, 2, 20,
                 encoder.setProperties(10, true, true), "test", Helper.createPointList3D(51.518224,-0.155107, 45, 51.518117,-0.155702, 38));
-        double expectedTime = 23.456569816934746;
+        double expectedTime = 31.953143641135767;
         double time = instance.calcExactTimeInSeconds(virtualEdge, false);
-        assertEquals(expectedTime, time, 0);
+        assertEquals(expectedTime, time, 1);
     }
 
     @Test
