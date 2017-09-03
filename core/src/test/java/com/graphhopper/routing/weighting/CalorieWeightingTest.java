@@ -24,17 +24,6 @@ public class CalorieWeightingTest {
                 encoder.setProperties(1.399165014411531, true, true), "test", Helper.createPointList3D(51, 0, 10, 51, 1, 9));
         double elevationChange = instance.calcElevationChange(virtualEdge, false);
         assertEquals(-1.0, elevationChange, 0);
-
-////        new VirtualEdgeIteratorState(originalTraversalKey, edgeID, baseNode, adjNode, distance, flag, name, pointList)
-
-        //        double speed = reverse ? flagEncoder.getReverseSpeed(edge.getFlags()) : flagEncoder.getSpeed(edge.getFlags());
-
-
-        //    public double getSpeed(long flags, CalorieWeighting weighting, EdgeIteratorState edge, boolean reverse) {
-
-
-//        System.out.println("Actual speed " + actualSpeed);
-
         double expectedDistance = instance.calcDistance(virtualEdge);// virtualEdge.getDistance();
         assertEquals(expectedDistance, 69976.69830000501, 0);
 
@@ -42,7 +31,6 @@ public class CalorieWeightingTest {
         double actualTime = instance.calcExactTimeInSeconds(virtualEdge, false);
         System.out.println("Actual time " + actualTime);
         assertEquals(expectedTime, actualTime, 0);
-//        assertEquals(0, instance.calcWeight(virtualEdge, false, virtualEdge.getOriginalTraversalKey()), 0);
     }
 
     @Test
