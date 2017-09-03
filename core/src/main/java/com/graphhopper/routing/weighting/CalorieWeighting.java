@@ -14,12 +14,13 @@ public class CalorieWeighting extends AbstractWeighting {
     private final long headingPenaltyMillis;
     private final double maxSpeed;
 
-    public final double weight = 75;
-    public final double load = 0;
-    public final double terrain = 1.0;
-    public double height = 175;
-    public boolean female = false;
-    public double age = 61;
+    //Add getter and setter methods
+    private final double weight = 75;
+    private final double load = 0;
+    private final double terrain = 1.0;
+    private final double height = 175;
+    private final boolean female = false;
+    private final double age = 61;
 
     public CalorieWeighting(FlagEncoder encoder, PMap map) {
         super(encoder);
