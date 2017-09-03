@@ -14,6 +14,12 @@ public class CalorieWeighting extends AbstractWeighting {
     private final long headingPenaltyMillis;
     private final double maxSpeed;
 
+    public final double weight = 75;
+    public final double load = 0;
+    public final double terrain = 1.0;
+    public double height = 175;
+    public boolean female = false;
+    public double age = 61;
 
     public CalorieWeighting(FlagEncoder encoder, PMap map) {
         super(encoder);
@@ -96,16 +102,6 @@ public class CalorieWeighting extends AbstractWeighting {
             return MR;
         }
     }
-
-    //Add getter and setter methods
-
-    public final double weight = 90;
-    public final double load = 0;
-    //Change load in Javascript too.
-    public final double terrain = 1.0;
-    public double height = 151;
-    public boolean female = false;
-    public double age = 18;
 
     public double constantCalc(double SMR) {
         double correction_percentage;
