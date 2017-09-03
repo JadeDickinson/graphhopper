@@ -136,7 +136,7 @@ public class PMap {
         return str;
     }
 
-    String get(String key) {
+    public String get(String key) {
         if (Helper.isEmpty(key))
             return "";
 
