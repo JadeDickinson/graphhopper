@@ -23,6 +23,11 @@ fi
 
 ACTION=$1
 FILE=$2
+WEIGHT_IN_KG=$3
+LOAD_IN_KG=$4
+HEIGHT_IN_CM=$5
+IS_FEMALE=$6
+AGE=$7
 
 function printUsage {
  echo
@@ -46,6 +51,12 @@ if [ "$ACTION" = "" ]; then
  echo "## action $ACTION not found. try" 
  printUsage
 fi
+
+echo "Your weight is $WEIGHT_IN_KG kg"
+echo "Your load is $LOAD_IN_KG kg"
+echo "Your height is $HEIGHT_IN_CM cm"
+echo "Are you female? $IS_FEMALE"
+echo "You are $AGE years old"
 
 function ensureOsm { 
   if [ "$OSM_FILE" = "" ]; then
