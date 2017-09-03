@@ -101,8 +101,8 @@ public class CalorieWeightingTest {
 
     @Test
     public void testCalcSMR() {
-        double expectedSMR = 1864.44;
         CalorieWeighting instance = new CalorieWeighting(encoder, new PMap(), args);
+        double expectedSMR = 1769.88;
         double SMR = instance.calcSMR();
         assertEquals(expectedSMR, SMR, 0);
     }
