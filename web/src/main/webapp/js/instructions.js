@@ -201,7 +201,20 @@ function calculateKcal(distance, changeInElevation, weight, load) {
         if (C > 0) {
             M = M - C;
         }
-
+        var BMR;
+        var female = true;
+        var height = 171;
+        var age = 27;
+        if (female) {
+            BMR = 655 + (9.6 * weight) + (1.7 * height) - (4.7 * age);
+        } else {
+            BMR = 66 + (13.7 * weight) + (5 * height) - (6.8 * age);
+        }
+        BMR = (BMR/86400) * 4184;
+        var SMR = 1.2 * BMR;
+        if (SMR > M) {
+           M = SMR;
+        }
         var kcal = (M * exactTimeInSeconds) / 4184;
         if (kcal < 0) {
             kcalAndSeconds.push(0);
