@@ -66,7 +66,7 @@ public class BeelineWeightApproximator implements WeightApproximator {
             double percentGrade = (toEle - fromEle) / dist2goal * 100;
             if (dist2goal == 0) percentGrade = 0;
             if (percentGrade < -8.0) percentGrade = -8.0;
-            double velocity = ((6*Math.exp(-3.5 * ((percentGrade*0.01) + 0.05)) * 1000) / 60 / 60);
+            double velocity = 1.34112;
             double estimatedTime2goal = dist2goal / velocity;
             double C = 0;
             if (percentGrade < 0)
