@@ -73,13 +73,13 @@ public class BeelineWeightApproximator implements WeightApproximator {
                 C = calWeighting.calcC(calWeighting.getWeight(), calWeighting.getLoad(), percentGrade, velocity);
             double M = (((1.5 * calWeighting.getWeight()) + ((2 * (calWeighting.getWeight() + calWeighting.getLoad()))) *  ((calWeighting.getLoad() / calWeighting.getWeight()) * (calWeighting.getLoad() / calWeighting.getWeight())))) + (calWeighting.getTerrain() * (calWeighting.getWeight() + calWeighting.getLoad())) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
             double MR = M - C;
-
             double BMR;
             if (calWeighting.getFemale()) {
                 BMR = 655 + (9.6 * calWeighting.getWeight()) + (1.7 * calWeighting.getHeight()) - (4.7 * calWeighting.getAge());
             } else {
                 BMR = 66 + (13.7 * calWeighting.getWeight()) + (5 * calWeighting.getHeight()) - (6.8 * calWeighting.getAge());
             }
+            BMR = (BMR * 4184) / 86400;
             double SMR = 1.2 * BMR;
             double kcal;
             if (SMR > MR) kcal = SMR * estimatedTime2goal / 4184;

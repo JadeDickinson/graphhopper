@@ -19,6 +19,8 @@ public class CalorieWeighting extends AbstractWeighting {
     private double age;
     private final double TERRAIN = 1.0;
 
+    private double SMR;
+
     public double getWeight() {
         return this.weight;
     }
@@ -54,6 +56,7 @@ public class CalorieWeighting extends AbstractWeighting {
         headingPenalty = map.getDouble(Routing.HEADING_PENALTY, Routing.DEFAULT_HEADING_PENALTY);
         headingPenaltyMillis = Math.round(headingPenalty * 1000);
         maxSpeed = encoder.getMaxSpeed() / SPEED_CONV;
+        SMR = calcSMR();
     }
 
     public CalorieWeighting(FlagEncoder encoder) {
@@ -122,8 +125,6 @@ public class CalorieWeighting extends AbstractWeighting {
         }
         double M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (TERRAIN * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
         double MR = M - C;
-
-        double SMR = calcSMR();
         if (SMR > MR + constantCalc(SMR)) {
             return SMR;
         } else {
@@ -189,6 +190,8 @@ public class CalorieWeighting extends AbstractWeighting {
         } else {
             BMR = 66 + (13.7 * weight) + (5 * height) - (6.8 * age);
         }
+        // Calculation done in this order for performance.
+        BMR = (BMR * 4184) / 86400;
         return BMR;
     }
 
