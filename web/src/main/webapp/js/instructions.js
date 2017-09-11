@@ -72,14 +72,16 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     var debugInstructions = request.api_params.debug_instructions;
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
-    var weight = parseFloat(prompt("Please enter your weight in kilos"));
-    while (weight < 0 || isNaN(weight)) {
-        weight = parseFloat(prompt("Please enter a positive weight in kilos"));
-    }
-    var load = parseFloat(prompt("Please enter your load carried in kilos"));
-    while (load < 0 || isNaN(load)) {
-        load = parseFloat(prompt("Please enter 0 or a positive load in kilos"));
-    }
+    var weight = 81;
+    var load = 0;
+    // var weight = parseFloat(prompt("Please enter your weight in kilos"));
+    // while (weight < 0 || isNaN(weight)) {
+    //     weight = parseFloat(prompt("Please enter a positive weight in kilos"));
+    // }
+    // var load = parseFloat(prompt("Please enter your load carried in kilos"));
+    // while (load < 0 || isNaN(load)) {
+    //     load = parseFloat(prompt("Please enter 0 or a positive load in kilos"));
+    // }
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
@@ -202,9 +204,9 @@ function calculateKcal(distance, changeInElevation, weight, load) {
             M = M - C;
         }
         var BMR;
-        var female = true;
-        var height = 171;
-        var age = 27;
+        var female = false;
+        var height = 175;
+        var age = 61;
         if (female) {
             BMR = 655 + (9.6 * weight) + (1.7 * height) - (4.7 * age);
         } else {
