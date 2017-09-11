@@ -190,6 +190,8 @@ public class CalorieWeighting extends AbstractWeighting {
         } else {
             BMR = 66 + (13.7 * weight) + (5 * height) - (6.8 * age);
         }
+        // Calculation done in this order for performance.
+        BMR = (BMR * 4184) / 86400;
         return BMR;
     }
 
