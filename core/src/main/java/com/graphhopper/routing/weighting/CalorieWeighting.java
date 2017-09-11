@@ -125,8 +125,8 @@ public class CalorieWeighting extends AbstractWeighting {
         }
         double M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (TERRAIN * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
         double MR = M - C;
-        if (SMR > MR + constantCalc(SMR)) {
-            return SMR;
+        if ((SMR * 20.6500956022944) > MR + (SMR * 9.24829682810043)) {
+            return SMR * 20.6500956022944;
         } else {
             return MR;
         }
