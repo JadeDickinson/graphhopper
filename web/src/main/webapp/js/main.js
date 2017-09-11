@@ -21593,14 +21593,14 @@ L.Map.mergeOptions({
 
 L.Map.ContextMenu = L.Handler.extend({
     _touchstart: L.Browser.msPointer ? 'MSPointerDown' : L.Browser.pointer ? 'pointerdown' : 'touchstart',
-
+    
     statics: {
         BASE_CLS: 'leaflet-contextmenu'
     },
-
+    
     initialize: function (map) {
         L.Handler.prototype.initialize.call(this, map);
-
+        
         this._items = [];
         this._visible = false;
 
@@ -21625,7 +21625,7 @@ L.Map.ContextMenu = L.Handler.extend({
         var container = this._map.getContainer();
 
         L.DomEvent
-            // .on(container, 'mouseleave', this._hide, this)
+            .on(container, 'mouseleave', this._hide, this)
             .on(document, 'keydown', this._onKeyDown, this);
 
         if (L.Browser.touch) {
@@ -22072,7 +22072,7 @@ L.Mixin.ContextMenu = {
     _initContextMenu: function () {
         this._items = [];
 
-        // this.on('contextmenu', this._showContextMenu, this);
+        this.on('contextmenu', this._showContextMenu, this);
     },
 
     _showContextMenu: function (e) {
@@ -41120,10 +41120,9 @@ module.exports.decodePath = decodePath;
 },{}],16:[function(require,module,exports){
 var translate = require('./translate.js');
 var messages = require('./messages.js');
-
 var routeSegmentPopup = null;
 
-function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, debugInstructions, kcal) {
+function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, debugInstructions, kcal, totalCals) {
     var sign = instr.sign;
     if (instrIndex === 0)
         sign = "marker-icon-green";
@@ -41145,6 +41144,9 @@ function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, deb
         var indiPic = "<img class='pic' style='vertical-align: middle' src='" +
                 dirname + "/img/" + sign + ".png'/>";
         instructionDiv.append("<td class='instr_pic'>" + indiPic + "</td>");
+        if (sign == "marker-icon-red") {
+            instructionDiv.append("<td class='kcal'>" + "Total calories required: " + totalCals.toFixed(2) + "kcal" + "</td>");
+        }
     } else {
         instructionDiv.append("<td class='instr_pic'/>");
     }
@@ -41185,11 +41187,21 @@ function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, deb
 }
 
 module.exports.create = function (mapLayer, path, urlForHistory, request) {
+    var totalCals;
     var instructionsElement = $("<table class='instructions'>");
     var debugInstructions = request.api_params.debug_instructions;
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
-    debugger;
+    var weight = 81;
+    var load = 0;
+    // var weight = parseFloat(prompt("Please enter your weight in kilos"));
+    // while (weight < 0 || isNaN(weight)) {
+    //     weight = parseFloat(prompt("Please enter a positive weight in kilos"));
+    // }
+    // var load = parseFloat(prompt("Please enter your load carried in kilos"));
+    // while (load < 0 || isNaN(load)) {
+    //     load = parseFloat(prompt("Please enter 0 or a positive load in kilos"));
+    // }
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
@@ -41198,8 +41210,15 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
             var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
             var changeInElevation = parseInt(nextElevation - lngLat[2]);
         }
-        var kcal = calculateKcal(instr.distance, changeInElevation);
-        addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
+        var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load);
+        instr.time = kcalAndTime.pop() * 1000;
+        var kcal = kcalAndTime.pop();
+        if (totalCals == undefined) {
+            totalCals = calculateTotalCalories(0, kcal);
+        } else {
+            totalCals = calculateTotalCalories(totalCals, kcal);
+        }
+        addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2), totalCals);
     }
     var infoDiv = $("<div class='instructions_info'>");
     infoDiv.append(instructionsElement);
@@ -41212,13 +41231,19 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
                 var instr = path.instructions[m];
                 var lngLat = path.points.coordinates[instr.interval[0]];
                 if (m < path.instructions.length - 1) {
-                    var nextInstr = path.instructions[m+1];
+                    var nextInstr = path.instructions[m + 1];
                     var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
                     var changeInElevation = parseInt(nextElevation - lngLat[2]);
                 }
-                var kcal = calculateKcal(instr.distance, changeInElevation);
-                // debugger;
-                addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2));
+                var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load);
+                instr.time = kcalAndTime.pop() * 1000;
+                var kcal = kcalAndTime.pop();
+                if (totalCals == undefined) {
+                    totalCals = calculateTotalCalories(0, kcal);
+                } else {
+                    totalCals = calculateTotalCalories(totalCals, kcal);
+                }
+                addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2), totalCals);
             }
         });
         instructionsElement.append(moreDiv);
@@ -41275,35 +41300,63 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     return infoDiv;
 };
 
-function calculateKcal(distance, changeInElevation) {
-    var weight = 60;
-    var load = 0;
+function calculateKcal(distance, changeInElevation, weight, load) {
     var terrain = 1.0;
-    var velocity = 1.34112;
-
+    var kcalAndSeconds = new Array;
     if (distance == 0) {
-        var kcal = 0;
+        kcalAndSeconds.push(0);
+        kcalAndSeconds.push(0);
     } else {
         var percentGrade = (changeInElevation / distance) * 100;
-        var exactTimeInSeconds = distance / velocity;
+        // Correct for slopes
+        if (percentGrade <= -8) {
+            percentGrade = -8;
+        }
+        var velocity = 1.34112;
+        var exactTimeInSeconds = calculateExactTimeInSeconds(distance, velocity);
 
         var C = 0;
         if (percentGrade < 0) {
-            if (percentGrade <= -8) {
-                percentGrade = -8;
-            }
             C = 1 * (((-percentGrade * (weight + load) * velocity)/3.5) - (((weight + load) * ((-percentGrade + 6)*(-percentGrade + 6))) /weight) + (25 - (velocity * velocity)));
         }
         var M = (((1.5 * weight) + ((2 * (weight + load))) *  ((load / weight) * (load / weight)))) + (terrain * (weight + load)) * (((1.5 * velocity) * (1.5 * velocity)) + (0.35 * (velocity * percentGrade)));
         if (C > 0) {
             M = M - C;
         }
+        var BMR;
+        var female = false;
+        var height = 175;
+        var age = 61;
+        if (female) {
+            BMR = 655 + (9.6 * weight) + (1.7 * height) - (4.7 * age);
+        } else {
+            BMR = 66 + (13.7 * weight) + (5 * height) - (6.8 * age);
+        }
+        BMR = (BMR/86400) * 4184;
+        var SMR = 1.2 * BMR;
+        if (SMR > M) {
+           M = SMR;
+        }
         var kcal = (M * exactTimeInSeconds) / 4184;
+        if (kcal < 0) {
+            kcalAndSeconds.push(0);
+        } else {
+            kcalAndSeconds.push(kcal);
+        }
+        kcalAndSeconds.push(exactTimeInSeconds);
     }
-    return kcal;
+    return kcalAndSeconds;
 };
 
+function calculateExactTimeInSeconds(distance, velocity) {
+    var exactTimeInSeconds = distance / velocity;
+    return exactTimeInSeconds;
+};
 
+function calculateTotalCalories(totalCals, kcal) {
+    totalCals = totalCals + kcal;
+    return totalCals;
+}
 },{"./messages.js":24,"./translate.js":31}],17:[function(require,module,exports){
 /*! jQuery UI - v1.12.0 - 2016-07-26
 * http://jqueryui.com
@@ -42268,7 +42321,6 @@ $(document).ready(function (e) {
             // https://github.com/defunkt/jquery-pjax/issues/143#issuecomment-6194330
 
             var state = History.getState();
-            console.log(state);
             initFromParams(state.data, true);
         });
     }
@@ -42816,6 +42868,9 @@ function routeLatLng(request, doQuery) {
                 else
                     tempRouteInfo = translate.tr("pt_route_info_walking", [tempArrTime, tempDistance]);
             } else {
+                var total = 0
+                for(var i in path.instructions) {total += path.instructions[i].time;}
+                path.time = total;
                 var tmpDuration = translate.createTimeString(path.time);
                 tempRouteInfo = translate.tr("route_info", [tempDistance, tmpDuration]);
             }
