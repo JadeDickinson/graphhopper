@@ -84,7 +84,7 @@ public class BeelineWeightApproximator implements WeightApproximator {
             double kcal;
             if (SMR > MR) kcal = SMR * estimatedTime2goal / 4184;
             else kcal = MR * estimatedTime2goal / 4184;
-            if(kcal < 0) throw new IllegalArgumentException("Calories for edge should not be negative");
+            if(kcal < 0) throw new IllegalArgumentException("Calories for estimate to goal should not be negative");
             if (Double.isNaN(dist2goal)) throw new IllegalArgumentException("Dist to goal should not be NaN");
             return kcal;
         } else {
