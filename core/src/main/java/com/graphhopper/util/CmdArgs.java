@@ -91,8 +91,12 @@ public class CmdArgs extends PMap {
             if (key.startsWith("-")) {
                 key = key.substring(1);
             }
-
             String value = arg.substring(index + 1);
+            if (key.equals("female")) {
+                if (!value.equals("true") && !value.equals("false")) {
+                    throw new IllegalArgumentException("You must enter a true or false value for female=");
+                }
+            }
             String old = map.put(key.toLowerCase(), value);
             if (old != null)
                 throw new IllegalArgumentException("Pair '" + key.toLowerCase() + "'='" + value + "' not possible to " +
