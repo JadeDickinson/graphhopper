@@ -92,17 +92,8 @@ public class CmdArgs extends PMap {
                 key = key.substring(1);
             }
             String value = arg.substring(index + 1);
-            if (key.equals("weight") && value.equals("")) {
-                throw new IllegalArgumentException("You must enter a value for weight");
-            }
-            if (key.equals("load") && value.equals("")) {
-                throw new IllegalArgumentException("You must enter a value for load");
-            }
-            if (key.equals("height") && value.equals("")) {
-                throw new IllegalArgumentException("You must enter a value for height");
-            }
-            if (key.equals("age") && value.equals("")) {
-                throw new IllegalArgumentException("You must enter a value for age");
+            if ((key.equals("weight") || key.equals("load") || key.equals("height") || key.equals("age")) && value.equals("")) {
+                throw new IllegalArgumentException("You must enter a value for " + key);
             }
             if (key.equals("female")) {
                 if (!value.equals("true") && !value.equals("false")) {
