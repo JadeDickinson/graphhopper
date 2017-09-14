@@ -92,7 +92,7 @@ public class CmdArgs extends PMap {
                 key = key.substring(1);
             }
             String value = arg.substring(index + 1);
-            if ((key.equals("weight") || key.equals("load") || key.equals("height") || key.equals("age")) && value.equals("")) {
+            if (value.equals("") && (key.equals("weight") || key.equals("load") || key.equals("height") || key.equals("age"))) {
                 throw new IllegalArgumentException("You must enter a value for " + key);
             }
             if (key.equals("female")) {
