@@ -75,7 +75,7 @@ function addUserDetails(weight, load, height, age, female) {
         gender = "male";
     }
     var userDiv = $("<tr class='user'/>");
-    userDiv.append("<td class='User details'>" + "You are " + gender + ", " + age + " years old, " + height + "cm tall, and weigh " + weight + "kg, with " + load + "kg load carried." + "</td>");
+    userDiv.append("<td class='details'>" + "You are " + gender + ", " + age + " years old, " + height + "cm tall, and weigh " + weight + "kg, with " + load + "kg load carried." + "</td>");
     return userDiv;
 }
 
