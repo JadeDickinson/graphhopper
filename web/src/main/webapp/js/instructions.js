@@ -66,22 +66,23 @@ function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, deb
     main.append(instructionDiv);
 }
 
-module.exports.create = function (mapLayer, path, urlForHistory, request) {
+module.exports.create = function (mapLayer, path, urlForHistory, request, userDetails) {
     var totalCals;
     var instructionsElement = $("<table class='instructions'>");
     var debugInstructions = request.api_params.debug_instructions;
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
-    var weight = 81;
-    var load = 0;
-    // var weight = parseFloat(prompt("Please enter your weight in kilos"));
-    // while (weight < 0 || isNaN(weight)) {
-    //     weight = parseFloat(prompt("Please enter a positive weight in kilos"));
-    // }
-    // var load = parseFloat(prompt("Please enter your load carried in kilos"));
-    // while (load < 0 || isNaN(load)) {
-    //     load = parseFloat(prompt("Please enter 0 or a positive load in kilos"));
-    // }
+    var weight = parseInt(userDetails.weight);
+    var load = parseInt(userDetails.load);
+    var female;
+    if (userDetails.female) {
+        female = true;
+    } else {
+        female = false;
+    }
+    var height = parseInt(userDetails.height);
+    var age = parseInt(userDetails.age);
+    
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
