@@ -83,11 +83,11 @@ public class InfoServlet extends GHBaseServlet {
             json.put("prepare_ch_date", tmpDate);
             json.put("prepare_date", tmpDate);
         }
-        json.put("Weight", args.get("weight"));
-        json.put("Load", args.get("load"));
-        json.put("Female", args.get("female"));
-        json.put("Height", args.get("height"));
-        json.put("Age", args.get("age"));
+        json.put("weight", args.get("weight"));
+        json.put("load", args.get("load"));
+        json.put("female", args.get("female"));
+        json.put("height", args.get("height"));
+        json.put("age", args.get("age"));
         writeJson(req, res, json);
     }
 }
