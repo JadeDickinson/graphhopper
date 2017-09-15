@@ -41184,6 +41184,19 @@ function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, deb
         }
     }
     main.append(instructionDiv);
+
+}
+
+function addUserDetails(weight, load, height, age, female) {
+    var gender;
+    if (female) {
+        gender = "female";
+    } else {
+        gender = "male";
+    }
+    var userDiv = $("<tr class='user'/>");
+    userDiv.append("<td class='details'>" + "You are " + gender + ", " + age + " years old, " + height + "cm tall, and weigh " + weight + "kg, with " + load + "kg load carried." + "</td>");
+    return userDiv;
 }
 
 module.exports.create = function (mapLayer, path, urlForHistory, request, userDetails) {
@@ -41219,13 +41232,15 @@ module.exports.create = function (mapLayer, path, urlForHistory, request, userDe
         } else {
             totalCals = calculateTotalCalories(totalCals, kcal);
         }
-        addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2), totalCals);
+        addInstruction(mapLayer, instructionsElement, instr, m, lngLat, request.useMiles, debugInstructions, kcal.toFixed(2), totalCals, weight, load, height, age, female);
     }
     var infoDiv = $("<div class='instructions_info'>");
     infoDiv.append(instructionsElement);
 
     if (partialInstr) {
         var moreDiv = $("<button id='moreButton'>" + translate.tr("more_button") + "…</button>");
+
+
         moreDiv.click(function () {
             moreDiv.remove();
             for (var m = len; m < path.instructions.length; m++) {
@@ -41298,6 +41313,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request, userDe
         hiddenDiv.append(metaVersionInfo);
 
     infoDiv.append(hiddenDiv);
+    infoDiv.append(addUserDetails(weight, load, height, age, female));
     return infoDiv;
 };
 
