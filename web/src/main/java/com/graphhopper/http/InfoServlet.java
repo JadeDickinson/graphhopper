@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.graphhopper.storage.GraphHopperStorage;
 import com.graphhopper.storage.StorableProperties;
+import com.graphhopper.util.CmdArgs;
 import com.graphhopper.util.Constants;
 import com.graphhopper.util.Helper;
 import com.graphhopper.util.Parameters;
@@ -44,6 +45,8 @@ public class InfoServlet extends GHBaseServlet {
     @Inject
     @Named("hasElevation")
     private boolean hasElevation;
+    @Inject
+    private CmdArgs args;
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -80,7 +83,11 @@ public class InfoServlet extends GHBaseServlet {
             json.put("prepare_ch_date", tmpDate);
             json.put("prepare_date", tmpDate);
         }
-
+        json.put("Weight", args.get("weight"));
+        json.put("Load", args.get("load"));
+        json.put("Female", args.get("female"));
+        json.put("Height", args.get("height"));
+        json.put("Age", args.get("age"));
         writeJson(req, res, json);
     }
 }
