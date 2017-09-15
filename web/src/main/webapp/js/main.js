@@ -41186,22 +41186,23 @@ function addInstruction(mapLayer, main, instr, instrIndex, lngLat, useMiles, deb
     main.append(instructionDiv);
 }
 
-module.exports.create = function (mapLayer, path, urlForHistory, request) {
+module.exports.create = function (mapLayer, path, urlForHistory, request, userDetails) {
     var totalCals;
     var instructionsElement = $("<table class='instructions'>");
     var debugInstructions = request.api_params.debug_instructions;
     var partialInstr = path.instructions.length > 100;
     var len = Math.min(path.instructions.length, 100);
-    var weight = 81;
-    var load = 0;
-    // var weight = parseFloat(prompt("Please enter your weight in kilos"));
-    // while (weight < 0 || isNaN(weight)) {
-    //     weight = parseFloat(prompt("Please enter a positive weight in kilos"));
-    // }
-    // var load = parseFloat(prompt("Please enter your load carried in kilos"));
-    // while (load < 0 || isNaN(load)) {
-    //     load = parseFloat(prompt("Please enter 0 or a positive load in kilos"));
-    // }
+    var weight = parseInt(userDetails.weight);
+    var load = parseInt(userDetails.load);
+    var female;
+    if (userDetails.female) {
+        female = true;
+    } else {
+        female = false;
+    }
+    var height = parseInt(userDetails.height);
+    var age = parseInt(userDetails.age);
+
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
@@ -41210,7 +41211,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
             var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
             var changeInElevation = parseInt(nextElevation - lngLat[2]);
         }
-        var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load);
+        var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load, height, age, female);
         instr.time = kcalAndTime.pop() * 1000;
         var kcal = kcalAndTime.pop();
         if (totalCals == undefined) {
@@ -41235,7 +41236,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
                     var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
                     var changeInElevation = parseInt(nextElevation - lngLat[2]);
                 }
-                var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load);
+                var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load, height, age, female);
                 instr.time = kcalAndTime.pop() * 1000;
                 var kcal = kcalAndTime.pop();
                 if (totalCals == undefined) {
@@ -41300,7 +41301,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request) {
     return infoDiv;
 };
 
-function calculateKcal(distance, changeInElevation, weight, load) {
+function calculateKcal(distance, changeInElevation, weight, load, height, age, female) {
     var terrain = 1.0;
     var kcalAndSeconds = new Array;
     if (distance == 0) {
@@ -41324,9 +41325,6 @@ function calculateKcal(distance, changeInElevation, weight, load) {
             M = M - C;
         }
         var BMR;
-        var female = false;
-        var height = 175;
-        var age = 61;
         if (female) {
             BMR = 655 + (9.6 * weight) + (1.7 * height) - (4.7 * age);
         } else {
@@ -42401,10 +42399,12 @@ $(document).ready(function (e) {
                 }
                 metaVersionInfo = messages.extractMetaVersionInfo(json);
 
+                var userDetails = json;
+
                 mapLayer.initMap(bounds, setStartCoord, setIntermediateCoord, setEndCoord, urlParams.layer, urlParams.use_miles);
 
                 // execute query
-                initFromParams(urlParams, true);
+                initFromParams(urlParams, true, userDetails);
 
                 checkInput();
             }, function (err) {
@@ -42454,7 +42454,7 @@ $(document).ready(function (e) {
 });
 
 
-function initFromParams(params, doQuery) {
+function initFromParams(params, doQuery, userDetails) {
     ghRequest.init(params);
 
     var flatpickr = new Flatpickr(document.getElementById("input_date_0"), {
@@ -42481,7 +42481,7 @@ function initFromParams(params, doQuery) {
 
     var routeNow = params.point && count >= 2;
     if (routeNow) {
-        resolveCoords(params.point, doQuery);
+        resolveCoords(params.point, doQuery, userDetails);
     } else if (params.point && count === 1) {
         ghRequest.route.set(params.point[singlePointIndex], singlePointIndex, true);
         resolveIndex(singlePointIndex).done(function () {
@@ -42490,7 +42490,7 @@ function initFromParams(params, doQuery) {
     }
 }
 
-function resolveCoords(pointsAsStr, doQuery) {
+function resolveCoords(pointsAsStr, doQuery, userDetails) {
     for (var i = 0, l = pointsAsStr.length; i < l; i++) {
         var pointStr = pointsAsStr[i];
         var coords = ghRequest.route.getIndex(i);
@@ -42502,11 +42502,11 @@ function resolveCoords(pointsAsStr, doQuery) {
 
     if (ghRequest.route.isResolved()) {
         resolveAll();
-        routeLatLng(ghRequest, doQuery);
+        routeLatLng(ghRequest, doQuery, userDetails);
     } else {
         // at least one text input from user -> wait for resolve as we need the coord for routing
         $.when.apply($, resolveAll()).done(function () {
-            routeLatLng(ghRequest, doQuery);
+            routeLatLng(ghRequest, doQuery, userDetails);
         });
     }
 }
@@ -42714,7 +42714,7 @@ function flagAll() {
     }
 }
 
-function routeLatLng(request, doQuery) {
+function routeLatLng(request, doQuery, userDetails) {
     // do_zoom should not show up in the URL but in the request object to avoid zooming for history change
     var doZoom = request.do_zoom;
     request.do_zoom = true;
@@ -42890,18 +42890,18 @@ function routeLatLng(request, doQuery) {
             buttons.append('|');
             buttons.append(miButton);
 
-            routeInfo.append(buttons);            
+            routeInfo.append(buttons);
 
             if (request.hasElevation()) {
                 routeInfo.append(translate.createEleInfoString(path.ascend, path.descend, request.useMiles));
             }
-            
+
             routeInfo.append($("<div style='clear:both'/>"));
             oneTab.append(routeInfo);
 
             if (path.instructions) {
                 var instructions = require('./instructions.js');
-                oneTab.append(instructions.create(mapLayer, path, urlForHistory, request));
+                oneTab.append(instructions.create(mapLayer, path, urlForHistory, request, userDetails));
             }
         }
         // already select best path
