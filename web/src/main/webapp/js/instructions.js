@@ -82,7 +82,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request, userDe
     }
     var height = parseInt(userDetails.height);
     var age = parseInt(userDetails.age);
-    
+
     for (var m = 0; m < len; m++) {
         var instr = path.instructions[m];
         var lngLat = path.points.coordinates[instr.interval[0]];
@@ -91,7 +91,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request, userDe
             var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
             var changeInElevation = parseInt(nextElevation - lngLat[2]);
         }
-        var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load);
+        var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load, height, age, female);
         instr.time = kcalAndTime.pop() * 1000;
         var kcal = kcalAndTime.pop();
         if (totalCals == undefined) {
@@ -116,7 +116,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request, userDe
                     var nextElevation = (path.points.coordinates[nextInstr.interval[0]])[2];
                     var changeInElevation = parseInt(nextElevation - lngLat[2]);
                 }
-                var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load);
+                var kcalAndTime = calculateKcal(instr.distance, changeInElevation, weight, load, height, age, female);
                 instr.time = kcalAndTime.pop() * 1000;
                 var kcal = kcalAndTime.pop();
                 if (totalCals == undefined) {
@@ -181,7 +181,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request, userDe
     return infoDiv;
 };
 
-function calculateKcal(distance, changeInElevation, weight, load) {
+function calculateKcal(distance, changeInElevation, weight, load, height, age, female) {
     var terrain = 1.0;
     var kcalAndSeconds = new Array;
     if (distance == 0) {
@@ -205,9 +205,6 @@ function calculateKcal(distance, changeInElevation, weight, load) {
             M = M - C;
         }
         var BMR;
-        var female = false;
-        var height = 175;
-        var age = 61;
         if (female) {
             BMR = 655 + (9.6 * weight) + (1.7 * height) - (4.7 * age);
         } else {
