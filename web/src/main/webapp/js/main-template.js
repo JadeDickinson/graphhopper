@@ -161,10 +161,12 @@ $(document).ready(function (e) {
                 }
                 metaVersionInfo = messages.extractMetaVersionInfo(json);
 
+                var userDetails = json;
+
                 mapLayer.initMap(bounds, setStartCoord, setIntermediateCoord, setEndCoord, urlParams.layer, urlParams.use_miles);
 
                 // execute query
-                initFromParams(urlParams, true);
+                initFromParams(urlParams, true, userDetails);
 
                 checkInput();
             }, function (err) {
@@ -214,7 +216,7 @@ $(document).ready(function (e) {
 });
 
 
-function initFromParams(params, doQuery) {
+function initFromParams(params, doQuery, userDetails) {
     ghRequest.init(params);
 
     var flatpickr = new Flatpickr(document.getElementById("input_date_0"), {
@@ -241,7 +243,7 @@ function initFromParams(params, doQuery) {
 
     var routeNow = params.point && count >= 2;
     if (routeNow) {
-        resolveCoords(params.point, doQuery);
+        resolveCoords(params.point, doQuery, userDetails);
     } else if (params.point && count === 1) {
         ghRequest.route.set(params.point[singlePointIndex], singlePointIndex, true);
         resolveIndex(singlePointIndex).done(function () {
@@ -250,7 +252,7 @@ function initFromParams(params, doQuery) {
     }
 }
 
-function resolveCoords(pointsAsStr, doQuery) {
+function resolveCoords(pointsAsStr, doQuery, userDetails) {
     for (var i = 0, l = pointsAsStr.length; i < l; i++) {
         var pointStr = pointsAsStr[i];
         var coords = ghRequest.route.getIndex(i);
@@ -262,11 +264,11 @@ function resolveCoords(pointsAsStr, doQuery) {
 
     if (ghRequest.route.isResolved()) {
         resolveAll();
-        routeLatLng(ghRequest, doQuery);
+        routeLatLng(ghRequest, doQuery, userDetails);
     } else {
         // at least one text input from user -> wait for resolve as we need the coord for routing
         $.when.apply($, resolveAll()).done(function () {
-            routeLatLng(ghRequest, doQuery);
+            routeLatLng(ghRequest, doQuery, userDetails);
         });
     }
 }
@@ -474,7 +476,7 @@ function flagAll() {
     }
 }
 
-function routeLatLng(request, doQuery) {
+function routeLatLng(request, doQuery, userDetails) {
     // do_zoom should not show up in the URL but in the request object to avoid zooming for history change
     var doZoom = request.do_zoom;
     request.do_zoom = true;
@@ -650,18 +652,18 @@ function routeLatLng(request, doQuery) {
             buttons.append('|');
             buttons.append(miButton);
 
-            routeInfo.append(buttons);            
+            routeInfo.append(buttons);
 
             if (request.hasElevation()) {
                 routeInfo.append(translate.createEleInfoString(path.ascend, path.descend, request.useMiles));
             }
-            
+
             routeInfo.append($("<div style='clear:both'/>"));
             oneTab.append(routeInfo);
 
             if (path.instructions) {
                 var instructions = require('./instructions.js');
-                oneTab.append(instructions.create(mapLayer, path, urlForHistory, request));
+                oneTab.append(instructions.create(mapLayer, path, urlForHistory, request, userDetails));
             }
         }
         // already select best path
