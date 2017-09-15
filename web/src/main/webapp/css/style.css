@@ -28,6 +28,7 @@ body {
 }
 
 .details {
+    padding-top: 4px;
     padding-left: 35px;
     font-size: 12px;
     padding-bottom: 4px;
