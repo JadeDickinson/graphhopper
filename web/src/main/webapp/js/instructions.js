@@ -119,8 +119,6 @@ module.exports.create = function (mapLayer, path, urlForHistory, request, userDe
 
     if (partialInstr) {
         var moreDiv = $("<button id='moreButton'>" + translate.tr("more_button") + "…</button>");
-
-
         moreDiv.click(function () {
             moreDiv.remove();
             for (var m = len; m < path.instructions.length; m++) {
