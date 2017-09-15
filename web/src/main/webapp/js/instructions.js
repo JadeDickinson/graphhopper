@@ -93,7 +93,6 @@ module.exports.create = function (mapLayer, path, urlForHistory, request, userDe
     } else {
         female = false;
     }
-    debugger;
     var height = parseInt(userDetails.height);
     var age = parseInt(userDetails.age);
 
