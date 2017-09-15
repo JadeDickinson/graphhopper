@@ -27,6 +27,12 @@ body {
     padding-right: 5px;
 }
 
+.details {
+    padding-left: 35px;
+    font-size: 12px;
+    padding-bottom: 4px;
+}
+
 .route_results {
     max-height: 40%;
 }
