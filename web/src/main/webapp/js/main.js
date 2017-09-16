@@ -41208,7 +41208,7 @@ module.exports.create = function (mapLayer, path, urlForHistory, request, userDe
     var weight = parseInt(userDetails.weight);
     var load = parseInt(userDetails.load);
     var female;
-    if (userDetails.female) {
+    if (userDetails.female == "female") {
         female = true;
     } else {
         female = false;
@@ -41239,8 +41239,6 @@ module.exports.create = function (mapLayer, path, urlForHistory, request, userDe
 
     if (partialInstr) {
         var moreDiv = $("<button id='moreButton'>" + translate.tr("more_button") + "…</button>");
-
-
         moreDiv.click(function () {
             moreDiv.remove();
             for (var m = len; m < path.instructions.length; m++) {
