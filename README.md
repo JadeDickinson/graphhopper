@@ -7,6 +7,8 @@ Per default it uses OpenStreetMap and GTFS data but can import other data source
 
 This project aims to provide users with the least calorically costly routes between points, using elevation data together with details of the user to weight the graph according to caloric cost between points and then using A* to generate routes. To use the custom weighting, set the weighting to 'calorie' in the URL.
 
+Guidelines on how to start GraphHopper from source can be found here: https://github.com/graphhopper/graphhopper/blob/master/docs/core/quickstart-from-source.md ; ignore the instructions to clone the repository and simply cd into the graphhopper folder.
+
 To startup the server using your own details, use the following startup command in the command line, replacing the details below with your own:
 
 ./graphhopper.sh web greater-london-latest.osm.pbf weight=65 load=0 height=165 female=true age=18
