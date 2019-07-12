@@ -1,11 +1,11 @@
-# GraphHopper Routing Engine
+# An application for generating the least calorically costly routes
 
-GraphHopper is a fast and memory efficient Java routing engine released under Apache License 2.0.
-Per default it uses OpenStreetMap and GTFS data but can import other data sources.
+This project was concerned with developing an application that takes elevation data and uses it to weight a graph in terms of how energetically demanding travel is between points. It uses existing research on the calculation of energy expenditure for walkers going uphill, downhill and on flat surfaces. The aim is to provide users with paths that will take the least energy to follow, and to give an estimate of calories burned for individual users.
 
-# Generating least calorically costly routes
+Based on a fork of the Graphhopper Routing Engine - see that project's readme below. I would like to open source this work and contribute it back to the project.
 
-This project aims to provide users with the least calorically costly routes between points, using elevation data together with details of the user to weight the graph according to caloric cost between points and then using A* to generate routes. To use the custom weighting, set the weighting to 'calorie' in the URL.
+Usage:
+To use the custom weighting, set the weighting to 'calorie' in the URL.
 
 Guidelines on how to start GraphHopper from source can be found here: https://github.com/graphhopper/graphhopper/blob/master/docs/core/quickstart-from-source.md ; ignore the instructions to clone the repository and simply cd into the graphhopper folder.
 
@@ -14,6 +14,13 @@ To startup the server using your own details, use the following startup command 
 ./graphhopper.sh web greater-london-latest.osm.pbf weight=65 load=0 height=165 female=true age=18
 
 N.B. Heights should be in cm and weight and load should be in kilograms.
+
+
+
+# Readme - GraphHopper Routing Engine
+
+GraphHopper is a fast and memory efficient Java routing engine released under Apache License 2.0.
+Per default it uses OpenStreetMap and GTFS data but can import other data sources.
 
 ## Get Started
 
