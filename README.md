@@ -11,9 +11,9 @@ Guidelines on how to start GraphHopper from source can be found here: https://gi
 
 To startup the server using your own details, use the following startup command in the command line, replacing the details below with your own:
 
-./graphhopper.sh web greater-london-latest.osm.pbf weight=65 load=0 height=165 female=true age=18
+./graphhopper.sh web greater-london-latest.osm.pbf weight={weight in kilograms} load={load carried in kilograms} height={height in centimetres} female=true age={age in years}
 
-N.B. Heights should be in cm and weight and load should be in kilograms.
+N.B. Height, weight, load and age should be integers. The graph will be weighted according to the details you specify.
 
 
 
