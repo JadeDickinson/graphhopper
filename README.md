@@ -15,6 +15,10 @@ To startup the server using your own details, use the following startup command 
 
 N.B. Height, weight, load and age should be integers. The graph will be weighted according to the details you specify.
 
+Example of a route showing calories required:
+
+![Example route](https://user-images.githubusercontent.com/14929975/67633891-7e175600-f8ad-11e9-97fd-800cb3e25497.png)
+
 
 
 # Readme - GraphHopper Routing Engine
