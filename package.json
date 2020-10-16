@@ -1694,7 +1694,7 @@
     "npm-install-checks": "~1.0.7",
     "npm-package-arg": "~4.1.0",
     "npm-registry-client": "~7.2.1",
-    "npm-user-validate": "~0.1.5",
+    "npm-user-validate": "~1.0.1",
     "npmlog": "~2.0.4",
     "once": "~1.4.0",
     "opener": "~1.4.1",
